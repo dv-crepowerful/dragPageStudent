@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .screen{
+                display: flex;
+            }
+            .disign_area{
+                display: flex;
+                flex-direction: column;
+                background: #aaa;
+                width: 300px;
+                min-height: 900px;
+                justify-content: space-around;
+            }
+            .viewer{
+                border: #00b dashed;
+                min-width: 800px;
+                min-height: 900px;
+            }
+            .set_area{
+                min-height: 500px;
+            }
+
+            .elem_li{
+                margin: 5px;
+            }
+
+            .new_block{
+                display: flex;
+                position: relative;
+                flex-direction: row;
+                min-height: 150px;
+                min-width: 660px;
+                margin: 5px;
+                margin-top: 20px;
+                border: #0ab solid;
+                justify-content: space-around;
+            }
+            .delete_btn{
+                position: absolute;
+                right: 0px;
+                top: 0px;
+            }
+            .set_btn{
+                position: absolute;
+                right: 45px;
+                top: 0px;
+            }
+            .reset_btn{
+                position: absolute;
+                right: 115px;
+                top: 0px;
+            }
+
+            .text_area{
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                margin: 10px;
+                min-width: 200px;
+                border: #ccc dashed;
+            }
+
+            .list_area{
+                position: relative;
+                display: flex;
+                margin: 10px;
+                min-width: 200px;
+                border: #ccc dashed;
+            }
+
+            .btn_area{
+                position: relative;
+                display: flex;
+                margin: 10px;
+                min-width: 200px;
+                border: #ccc dashed;
+            }
+
+            .link_area{
+                position: relative;
+                display: flex;
+                margin: 10px;
+                min-width: 200px;
+                border: #ccc dashed;
+            }
+
+            .picture_area{
+                position: relative;
+                display: flex;
+                margin: 10px;
+                min-width: 200px;
+                border: #ccc dashed;
+            }
+
+            .video_area{
+                position: relative;
+                display: flex;
+                margin: 10px;
+                min-width: 200px;
+                border: #ccc dashed;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="screen">
+            <div id="disign_area" class="disign_area">
+                <button id="create_block_btn" onclick="create_block()">新增區塊</button>
+                <ul ondragstart="dragStartHandler(event)" >
+                    <li class="elem_li" draggable="true" data-value="text">文字</li>
+                    <li class="elem_li" draggable="true" data-value="picture">圖片</li>
+                    <li class="elem_li" draggable="true" data-value="list">清單</li>
+                    <li class="elem_li" draggable="true" data-value="video">影片</li>
+                    <li class="elem_li" draggable="true" data-value="button">按鈕</li>
+                    <li class="elem_li" draggable="true" data-value="link">連結</li>
+                    <li class="elem_li" draggable="true" data-value="area">區塊</li>
+                </ul>
+                <div id="reset_elem_selector"></div>
+                <div id="set_area" class="set_area">
+
+                    <div id="set_text" style="display: none;">
+                        <label for="type_select">文體:</label>
+                        <select name="type_select" id="type_select">
+                            <option value="H1">大標題</option>
+                            <option value="H3">小標題</option>
+                            <option value="p">文章</option>
+                        </select>
+                        <label for="font_type">特效:</label>
+                        <select name="font_type" id="font_type">
+                            <option value="I">斜體</option>
+                            <option value="b">粗體</option>
+                            <option value="u">加底線</option>
+                            <option value="spu">上標</option>
+                            <option value="sbu">下標</option>
+                            <option value="strong">強調</option>
+                            <option value="s">刪除線</option>
+                        </select>
+                        <label for="font_family">字型:</label>
+                        <select name="font_family" id="font_family">
+                            <option value="DFKai-sb">標楷體</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Microsoft JhengHei">微軟正黑體</option>
+                            <option value="PMingLiU">新細明體</option>
+                            <option value="cursive">手寫體</option>
+                        </select>
+                        <label for="font_size">字體大小:</label>
+                        <input type="number" id="font_size">
+                        <label for="font_color">字體顏色:</label>
+                        <input type="color" id="font_color">
+                        <label for="text_in">輸入文字:</label>
+                        <textarea  id="text_in" cols="30" rows="10"></textarea>
+                        <button id="text_sent">送出</button>
+                        <button id="text_delete">刪除</button>
+                    </div>
+
+                    <div id="set_list" style="display: none;">
+                        <label for="list_type">清單類型&排序:</label>
+                        <div>
+                            <select id="list_type">
+                                <option value="ul">不可數清單</option>
+                                <option value="ol">可數清單</option>
+                            </select>
+                            <select id="list_style">
+                                <option value="row">橫排</option>
+                                <option value="column">直排</option>
+                            </select>
+                            <button id="type_enter_btn">確定</button>
+                        </div>
+
+                        <label for="new_li_text_in">條目內容</label>
+                        <div>
+                            <input type="text" id="new_li_text_in">
+                            <button id="create_new_li_btn">新增</button>
+                        </div>                    
+                        <div id="list_pre_viewer"></div>
+                        <button id="new_list_sent">送出</button>
+                    </div>
+
+                    <div id="reset_list" style="display: none;">
+                        <div id="reset_li_previewer"></div>
+                        <label for="reset_list_type">更改清單樣式</label>
+                        <div>
+                            <select id="reset_list_type">
+                                <option value="ul">不可數清單</option>
+                                <option value="ol">可數清單</option>
+                            </select>
+                            <select id="reset_list_style">
+                                <option value="row">橫排</option>
+                                <option value="column">直排</option>
+                            </select>
+                            <button id="reset_type_enter_btn">確定</button>
+                        </div>
+                        <label for="new_list_text_in">新增條目</label>
+                        <div>
+                            <input type="text" id="new_list_text_in">
+                            <button id="sent_new_li">新增</button>
+                        </div>
+                        <label for="reset_list_text_in">修改條目</label>
+                        <div>
+                            <input type="text" id="reset_list_text_in">
+                            <button id="sent_reset_li">修改</button>
+                            <button id="delete_li">刪除</button>
+                        </div>
+                        <button id="reset_list_sent">完成編輯</button>
+                        <button id="delete_list">刪除清單</button>
+                    </div>
+
+                    <div id="set_btn" style="display: none;">
+                        <label for="btn_text_in">按鈕文字:</label>
+                        <input type="text" id="btn_text_in">
+                        <button id="new_btn_sent">送出</button>
+                        <button id="delete_btn">刪除</button>
+                    </div>
+
+                    <div id="set_link" style="display: none;">
+                        <label for="link_name">連結提示:</label>
+                        <input type="text"  id="link_name">
+                        <label for="link_text_in">連結網址:</label>
+                        <input type="url"  id="link_text_in">
+                        <button id="new_link_sent">送出</button>
+                    </div>
+
+                    <div id="set_picture" style="display: none;">
+                        <label for="picture_onload">圖片上傳</label>
+                        <input type="file" id="picture_onload" accept="image/gif, image/jpeg, image/png">
+                        <label for="img_size">圖片大小:</label>
+                        <input type="number"  id="img_size">
+                        <button id="pre_view_btn">預覽</button>
+                        <div id="pre_viewer"></div>
+                        <button id="new_picture_sent">送出</button>
+                    </div>
+
+                    <div id="set_video" style="display: none;">
+                        <label for="video_onload">影片上傳</label>
+                        <input type="file" id="video_onload" accept="video/.mp4 video/.ogg, video/.webm">
+                        <label for="video_size">影片大小:</label>
+                        <input type="number"  id="video_size">
+                        <button id="video_pre_view_btn">預覽</button>
+                        <div id="video_pre_viewer"></div>
+                        <button id="new_video_sent">送出</button>
+                    </div>
+                </div>
+            </div>
+            <div id="viewer" class="viewer"></div>
+        </div>
+        <script>
+            let Type = "text";
+            let viewer = document.getElementById("viewer");
+            let set_area = document.getElementById("set_area");
+            let reset_elem_selector = document.getElementById("reset_elem_selector");
+
+            function dragStartHandler(event) {
+                if (event.target instanceof HTMLLIElement) 
+                {
+                event.dataTransfer.setData(Type, event.target.dataset.value);
+                event.dataTransfer.effectAllowed = 'move'; 
+                } 
+                else 
+                {
+                event.preventDefault(); 
+                }
+            }
+
+            function create_block (){
+                let new_block = document.createElement('div');
+                let delete_new_block_btn = document.createElement('input');
+                new_block.className = "new_block"
+                new_block.draggable="true";
+                delete_new_block_btn.type = 'button';
+                delete_new_block_btn.value = "刪除";
+                delete_new_block_btn.className = "delete_btn";
+                new_block.appendChild(delete_new_block_btn);
+                viewer.appendChild(new_block);
+
+                new_block.ondragover = function (event) {
+                    event.dataTransfer.dropEffect = 'move';
+                    event.preventDefault();
+                }
+
+                new_block.ondrop = function (event){
+                    let data = event.dataTransfer.getData(Type);
+                    let dropX = event.pageX;
+                    let target_block = event.target;
+                    switch (data){
+                        case "text":{
+                            create_text_area(dropX ,target_block);
+                        break;}
+                        case 'picture':{
+                            create_picture_area(dropX ,target_block);
+                        break;}
+                        case 'list':{
+                            create_list_area(dropX ,target_block);
+                        break;}
+                        case 'video':{
+                            create_video_area(dropX ,target_block);
+                        break;}
+                        case 'button':{
+                            create_btn_area(dropX ,target_block);
+                        break;}
+                        case 'link':{
+                            create_link_area(dropX ,target_block);
+                        break;}
+                        case 'area':{
+                            console.log("area");
+                        break;}
+                    }
+                }
+
+                new_block.ondragend = function (){
+                    let dropY = event.pageY;
+                    for (let b = 0; b < viewer.childNodes.length; b++) {
+                        if(dropY < viewer.childNodes[b].offsetTop)
+                        {
+                            viewer.insertBefore(event.target,viewer.childNodes[b]);
+                            break;
+                        }
+                        if (dropY > viewer.childNodes[b].offsetTop && viewer.childNodes[b] === viewer.lastChild){
+                            viewer.appendChild(event.target);
+                        }
+                    }
+                }
+                
+                delete_new_block_btn.onclick = function (){
+                    viewer.removeChild(event.target.parentElement);
+                }
+            }
+
+            function create_text_area(dropX ,target_block){
+                let set_text = document.getElementById("set_text");
+                let type_select = document.getElementById("type_select");
+                let font_type = document.getElementById("font_type");
+                let font_family = document.getElementById("font_family");
+                let font_size = document.getElementById("font_size");
+                let font_color = document.getElementById("font_color");
+                let text_in = document.getElementById("text_in");
+                let text_delete = document.getElementById("text_delete");
+                let text_sent = document.getElementById("text_sent");
+                let text_area = document.createElement('div');
+                let delete_text_area_btn = document.createElement('input');
+                let set_text_area_btn = document.createElement('input');
+                let reset_text_area_btn = document.createElement('input');
+                text_area.className= "text_area";
+                text_area.draggable="true"
+                delete_text_area_btn.type = 'button';
+                delete_text_area_btn.value = "刪除";
+                delete_text_area_btn.classList = "delete_btn";
+                set_text_area_btn.type = 'button';
+                set_text_area_btn.value = "新增文本";
+                set_text_area_btn.classList = "set_btn";
+                reset_text_area_btn.type = 'button';
+                reset_text_area_btn.value = "編輯文本";
+                reset_text_area_btn.classList = "reset_btn";
+                text_area.appendChild(reset_text_area_btn);
+                text_area.appendChild(delete_text_area_btn);
+                text_area.appendChild(set_text_area_btn);
+                
+                reset_text_area_btn.style.display = "none";
+
+                for (let i = 0; i < target_block.childNodes.length; i++) {
+                    if (target_block.childNodes.length == 1){
+                        target_block.appendChild(text_area);
+                        break;
+                    }
+                    if (dropX < target_block.childNodes[i].offsetLeft){
+                        target_block.insertBefore(text_area,target_block.childNodes[i]);
+                        break;
+                    }
+                    if (dropX > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                        target_block.appendChild(text_area);
+                        break;
+                    }
+                }
+
+                text_area.ondragend = function (){
+                    let x = event.pageX
+                    console.log(target_block); 
+                    for (let i = 0; i < target_block.childNodes.length; i++) {
+                        if (x < target_block.childNodes[i].offsetLeft){
+                            target_block.insertBefore(event.target,target_block.childNodes[i]);
+                            break;
+                        }
+                        if (x > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                            target_block.appendChild(event.target);
+                            break;
+                        }
+                    }
+                    event.stopPropagation()
+                }
+
+                delete_text_area_btn.onclick = function (){
+                    target_block.removeChild(event.target.parentElement);
+                    if (text_area.childNodes.length == 3){
+                        reset_text_area_btn.style.display = "none";
+                    }
+                }
+
+                set_text_area_btn.onclick = function (){
+                    let set_text_area = event.target.parentElement;
+                    set_text.style.display = "flex";
+                    set_text.style.flexDirection = "column";
+  
+                    text_sent.onclick = function (){
+                        let text = document.createElement(type_select.value);
+                        let text_type = document.createElement(font_type.value);
+                        text_type.style.fontFamily = font_family.value;
+                        text_type.style.color = font_color.value;
+                        text_type.style.fontSize = font_size.value + 'px';
+                        text_type.textContent = text_in.value;
+                        text.appendChild(text_type);
+                        set_text_area.appendChild(text);
+                        set_text_area.firstChild.style.display = "inline"
+                        set_text.style.display = "none";
+                    }
+
+                    text_delete.onclick = function (){
+                        set_text.style.display = "none";
+                    }
+                };
+
+                reset_text_area_btn.onclick = function (){
+                    let reset_text_area = event.target.parentElement;
+                    let reset_text_ul = document.createElement('ul');
+                    reset_text_ul.style.listStyle = "none";
+                    if(reset_elem_selector.childNodes.length !== 0){
+                        reset_elem_selector.removeChild(reset_elem_selector.firstChild)
+                    }
+                    for (let i = 3; i < reset_text_area.childNodes.length; i++) {
+                      let reset_text_li = document.createElement('li');
+                      reset_text_li.id = i ;
+                      reset_text_li.textContent = "編輯第" + (i-2) + "個文本"; 
+                      reset_text_ul.appendChild(reset_text_li);
+                      reset_elem_selector.appendChild(reset_text_ul);
+
+                      reset_text_li.onclick = function (){
+                        let reset_li = event.target;
+                        let reset_text = reset_text_area.childNodes[event.target.id];
+                        set_text.style.display = "flex";
+                        set_text.style.flexDirection = "column";
+                        console.log(reset_text.firstChild);
+                        type_select.value = reset_text.tagName;
+                        font_type.value = reset_text.firstChild.tagName;
+                        font_family.value = reset_text.firstChild.style.fontFamily;
+                        font_color.value = reset_text.firstChild.style.color;
+                        font_size.value = reset_text.firstChild.style.fontSize - 'px';
+                        text_in.value = reset_text.firstChild.textContent;
+                        text_sent.onclick = function (){
+                            reset_text.tagName = type_select.value;
+                            reset_text.firstChild.tagName = font_type.value;
+                            reset_text.firstChild.style.fontFamily = font_family.value;
+                            reset_text.firstChild.style.color = font_color.value;
+                            reset_text.firstChild.style.fontSize = font_size.value + 'px';
+                            reset_text.firstChild.textContent = text_in.value;
+                            set_text.style.display = "none";
+                            if(reset_elem_selector.childNodes.length !== 0){
+                                reset_elem_selector.removeChild(reset_elem_selector.firstChild)
+                            }
+                        }
+                        text_delete.onclick = function (){
+                            reset_text_area.removeChild(reset_text);
+                            set_text.style.display = "none";
+                            reset_text_ul.removeChild(reset_li);
+                            if (reset_text_area.childNodes.length == 3){
+                                reset_text_area.firstChild.style.display = "none";
+                            }
+                            if(reset_elem_selector.childNodes.length !== 0){
+                                reset_elem_selector.removeChild(reset_elem_selector.firstChild)
+                            }
+                        }
+                      }
+                    }
+                    
+                }
+            }
+            
+            function create_list_area(dropX ,target_block){
+                let set_list = document.getElementById('set_list');
+                let list_type = document.getElementById ("list_type");
+                let new_li_text_in = document.getElementById ("new_li_text_in");
+                let create_new_li_btn = document.getElementById ("create_new_li_btn");
+                let list_pre_viewer = document.getElementById ("list_pre_viewer");
+                let list_delete = document.getElementById("list_delete");
+                let new_list_sent = document.getElementById ("new_list_sent");
+                let type_enter_btn = document.getElementById ("type_enter_btn");
+                let list_style = document.getElementById("list_style");
+                let reset_list = document.getElementById("reset_list");
+                let reset_li_previewer = document.getElementById("reset_li_previewer");
+                let reset_list_type = document.getElementById("reset_list_type");
+                let reset_list_style = document.getElementById("reset_list_style");
+                let reset_type_enter_btn = document.getElementById("reset_type_enter_btn");
+                let new_list_text_in = document.getElementById("new_list_text_in");
+                let sent_new_li = document.getElementById("sent_new_li");
+                let reset_list_text_in = document.getElementById("reset_list_text_in");
+                let sent_reset_li = document.getElementById("sent_reset_li");
+                let delete_li = document.getElementById("delete_li");
+                let reset_list_sent = document.getElementById("reset_list_sent");
+                let delete_list = document.getElementById("delete_list");
+                let list_area = document.createElement('div');
+                let delete_list_area_btn = document.createElement('input');
+                let set_list_area_btn = document.createElement('input');
+                let reset_list_area_btn = document.createElement('input');
+                list_area.className= "list_area";
+                list_area.draggable="true"
+                delete_list_area_btn.type = 'button';
+                delete_list_area_btn.value = "刪除";
+                delete_list_area_btn.classList = "delete_btn";
+                set_list_area_btn.type = 'button';
+                set_list_area_btn.value = "新增清單";
+                set_list_area_btn.classList = "set_btn";
+                reset_list_area_btn.type = 'button';
+                reset_list_area_btn.value = "編輯清單";
+                reset_list_area_btn.classList = "reset_btn";
+                list_area.appendChild(reset_list_area_btn);
+                list_area.appendChild(delete_list_area_btn);
+                list_area.appendChild(set_list_area_btn);
+                reset_list_area_btn.style.display = "none";
+                for (let i = 0; i < target_block.childNodes.length; i++) {
+                    if (target_block.childNodes.length == 1){
+                        target_block.appendChild(list_area);
+                        break;
+                    }
+                    if (dropX < target_block.childNodes[i].offsetLeft){
+                        target_block.insertBefore(list_area,target_block.childNodes[i]);
+                        break;
+                    }
+                    if (dropX > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                        target_block.appendChild(list_area);
+                        break;
+                    }
+                }
+
+                list_area.ondragend = function (){
+                    let x = event.pageX
+                    for (let i = 0; i < target_block.childNodes.length; i++) {
+                        if (x < target_block.childNodes[i].offsetLeft){
+                            target_block.insertBefore(event.target,target_block.childNodes[i]);
+                            break;
+                        }
+                        if (x > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                            target_block.appendChild(event.target);
+                            break;
+                        }
+                    }
+                    event.stopPropagation()
+                }
+
+                delete_list_area_btn.onclick = function (){
+                    target_block.removeChild(event.target.parentElement);
+                } 
+
+                set_list_area_btn.onclick = function (){
+                    let set_list_area = event.target.parentElement;
+                    let new_list = document.createElement(list_type.value);
+                    set_list.style.display = "flex";
+                    set_list.style.flexDirection = "column";
+
+                    type_enter_btn.onclick = function (){     
+                        new_list.style.display = "flex";
+                        new_list.style.flexDirection = list_style.value;
+                        list_pre_viewer.appendChild(new_list);
+                    }
+
+                    
+
+                    create_new_li_btn.onclick = function (){
+                        let new_li = document.createElement('li');
+                        new_li.textContent = new_li_text_in.value;
+                        if (list_style.value === "row"){
+                            new_li.style.display = "inline";
+                            new_li.style.margin = 5 + 'px';
+                        }
+                        list_pre_viewer.lastElementChild.appendChild(new_li);
+                    }                  
+                    new_list_sent.onclick = function (){
+                        set_list.style.display = "none";
+                        set_list_area.appendChild(new_list);
+                        if(set_list_area.childNodes.length !== 3){
+                            set_list_area.firstChild.style.display = "inline";
+                        }
+                    }
+                }
+
+                reset_list_area_btn.onclick = function (){
+                    let reset_list_area = event.target.parentElement;
+                    let reset_list_ul = document.createElement('ul');
+                    for (let i = 3; i < reset_list_area.childNodes.length; i++) {
+                        let reset_list_li = document.createElement('li');
+                        reset_list_li.id = i;
+                        reset_list_li.textContent = "編輯第"+ (i-2) + "個清單";
+                        reset_list_ul.appendChild(reset_list_li);
+                        reset_elem_selector.appendChild(reset_list_ul);
+
+                        reset_list_li.onclick = function (){
+                            reset_list.style.display = "flex";
+                            reset_list.style.flexDirection = "column";
+                            let reset_ul = reset_list_area.childNodes[event.target.id];
+                            let pre_reset_ul = reset_ul.nextElementSibling;
+                            let reset_li = reset_ul.childNodes;
+                            reset_li_previewer.appendChild(reset_ul);
+                            sent_new_li.onclick = function (){
+                                let new_li = document.createElement('li');
+                                new_li.textContent = new_list_text_in.value
+                                reset_ul.appendChild(new_li);
+                            }
+
+                            reset_list_sent.onclick = function (){
+                                reset_list_area.insertBefore(reset_ul,pre_reset_ul);
+                                if(reset_elem_selector.childNodes.length !== 0){
+                                    reset_elem_selector.removeChild(reset_elem_selector.firstChild)
+                                }
+                                reset_list.style.display = "none";
+                            }
+
+                            delete_list.onclick = function (){
+                                reset_li_previewer.removeChild(reset_ul)
+                                if(reset_elem_selector.childNodes.length !== 0){
+                                    reset_elem_selector.removeChild(reset_elem_selector.firstChild)
+                                }
+                                reset_list.style.display = "none";
+                                if(reset_list_area.childNodes.length == 3){
+                                    reset_list_area.firstChild.style.display = "none";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            function create_btn_area(dropX ,target_block){
+                let set_btn = document.getElementById('set_btn');
+                let btn_area = document.createElement('div');
+                let delete_btn_area_btn = document.createElement('input');
+                let set_btn_area_btn = document.createElement('input');
+                let reset_btn_area_btn = document.createElement('input');
+                let new_btn_sent = document.getElementById("new_btn_sent");
+                let delete_btn = document.getElementById("delete_btn");
+                let btn_text_in = document.getElementById("btn_text_in");
+                btn_area.className= "btn_area";
+                btn_area.draggable="true"
+                delete_btn_area_btn.type = 'button';
+                delete_btn_area_btn.value = "刪除";
+                delete_btn_area_btn.classList = "delete_btn";
+                set_btn_area_btn.type = 'button';
+                set_btn_area_btn.value = "按鈕新增";
+                set_btn_area_btn.classList = "set_btn";
+                reset_btn_area_btn.type = 'button';
+                reset_btn_area_btn.value = "編輯按鈕";
+                reset_btn_area_btn.classList = "reset_btn";
+                btn_area.appendChild(reset_btn_area_btn);
+                btn_area.appendChild(delete_btn_area_btn);
+                btn_area.appendChild(set_btn_area_btn);
+                reset_btn_area_btn.style.display = "none"
+                for (let i = 0; i < target_block.childNodes.length; i++) {
+                    if (target_block.childNodes.length == 1){
+                        target_block.appendChild(btn_area);
+                        break;
+                    }
+                    if (dropX < target_block.childNodes[i].offsetLeft){
+                        target_block.insertBefore(btn_area,target_block.childNodes[i]);
+                        break;
+                    }
+                    if (dropX > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                        target_block.appendChild(btn_area);
+                        break;
+                    }
+                }
+
+                btn_area.ondragend = function (){
+                    let x = event.pageX
+                    for (let i = 0; i < target_block.childNodes.length; i++) {
+                        if (x < target_block.childNodes[i].offsetLeft){
+                            target_block.insertBefore(event.target,target_block.childNodes[i]);
+                            break;
+                        }
+                        if (x > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                            target_block.appendChild(event.target);
+                            break;
+                        }
+                    }
+                    event.stopPropagation()
+                }
+
+                delete_btn_area_btn.onclick = function (){
+                    target_block.removeChild(event.target.parentElement);
+                }
+
+                set_btn_area_btn.onclick = function (){
+                    let set_btn_area = event.target.parentElement;
+                    set_btn.style.display = "flex";
+                    set_btn.style.flexDirection = "column";
+                    new_btn_sent.onclick = function (){
+                        let new_btn = document.createElement('button');
+                        new_btn.textContent = btn_text_in.value;
+                        set_btn_area.appendChild(new_btn)
+                        set_btn.style.display = "none";
+                        if (set_btn_area.childNodes.length !== 3){
+                            set_btn_area.firstChild.style.display = "inline";
+                        }
+                    }
+                    delete_btn.onclick = function (){
+                        set_btn.style.display = "none";
+                    }
+                }
+
+                reset_btn_area_btn.onclick = function (){
+                    let reset_btn_area = event.target.parentElement
+                    let reset_btn_ul = document.createElement('ul');
+                    for (let i = 3; i < reset_btn_area.childNodes.length; i++) {
+                        let reset_btn_li = document.createElement('li');
+                        reset_btn_li.id = i ;
+                        reset_btn_li.textContent = "編輯第"+ (i-2) + "個按鈕";
+                        reset_btn_ul.appendChild(reset_btn_li);
+                        reset_elem_selector.appendChild(reset_btn_ul);
+
+                        reset_btn_li.onclick = function (){
+                            let reset_btn = reset_btn_area.childNodes[event.target.id];
+                            set_btn.style.display = "flex";
+                            set_btn.style.flexDirection = "column";
+                            btn_text_in.value = reset_btn.textContent ;
+                            new_btn_sent.onclick = function (){
+                                reset_btn.textContent = btn_text_in.value;
+                                reset_elem_selector.removeChild(reset_elem_selector.firstElementChild);
+                                set_btn.style.display = "none";
+                            }
+                            delete_btn.onclick = function (){
+                                reset_btn_area.removeChild(reset_btn);
+                                reset_elem_selector.removeChild(reset_elem_selector.firstElementChild);
+                                if (set_btn_area.childNodes.length == 3){
+                                    set_btn_area.firstChild.style.display = "none";
+                                    set_btn.style.display = "none";
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            function create_link_area(dropX ,target_block){
+                let set_link = document.getElementById('set_link');
+                let new_link_sent = document.getElementById("new_link_sent");
+                let link_name = document.getElementById("link_name");
+                let link_text_in = document.getElementById("link_text_in");
+                let link_area = document.createElement('div');
+                let delete_link_area_btn = document.createElement('input');
+                let set_link_area_btn = document.createElement('input');
+                link_area.className= "link_area";
+                link_area.draggable="true"
+                delete_link_area_btn.type = 'button';
+                delete_link_area_btn.value = "刪除";
+                delete_link_area_btn.classList = "delete_btn";
+                set_link_area_btn.type = 'button';
+                set_link_area_btn.value = "連結新增";
+                set_link_area_btn.classList = "set_btn";
+                link_area.appendChild(delete_link_area_btn);
+                link_area.appendChild(set_link_area_btn);
+                for (let i = 0; i < target_block.childNodes.length; i++) {
+                    if (target_block.childNodes.length == 1){
+                        target_block.appendChild(link_area);
+                        break;
+                    }
+                    if (dropX < target_block.childNodes[i].offsetLeft){
+                        target_block.insertBefore(link_area,target_block.childNodes[i]);
+                        break;
+                    }
+                    if (dropX > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                        target_block.appendChild(link_area);
+                        break;
+                    }
+                }
+
+                link_area.ondragend = function (){
+                    let x = event.pageX
+                    for (let i = 0; i < target_block.childNodes.length; i++) {
+                        if (x < target_block.childNodes[i].offsetLeft){
+                            target_block.insertBefore(event.target,target_block.childNodes[i]);
+                            break;
+                        }
+                        if (x > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                            target_block.appendChild(event.target);
+                            break;
+                        }
+                    }
+                    event.stopPropagation()
+                }
+
+                delete_link_area_btn.onclick = function (){
+                    target_block.removeChild(event.target.parentElement);
+                }
+
+                set_link_area_btn.onclick = function (){
+                    let set_link_area = event.target.parentElement;
+                    set_link.style.display = "flex";
+                    set_link.style.flexDirection = "column";
+                    new_link_sent.onclick = function (){
+                        let new_link = document.createElement('a');
+                        new_link.textContent = link_name.value;
+                        new_link.href = link_text_in.value;
+                        set_link.style.display = "none";
+                        set_link_area.appendChild(new_link);
+                    }
+
+                }
+            }
+        
+            function create_picture_area(dropX ,target_block){
+                let set_picture = document.getElementById('set_picture');
+                let new_picture_sent = document.getElementById("new_picture_sent");
+                let picture_onload = document.getElementById("picture_onload");
+                let img_size = document.getElementById("img_size");
+                let pre_view_btn = document.getElementById("pre_view_btn");
+                let pre_viewer = document.getElementById("pre_viewer");
+                let picture_area = document.createElement('div');
+                let delete_picture_area_btn = document.createElement('input');
+                let set_picture_area_btn = document.createElement('input');
+                picture_area.className= "picture_area";
+                picture_area.draggable="true"
+                delete_picture_area_btn.type = 'button';
+                delete_picture_area_btn.value = "刪除";
+                delete_picture_area_btn.classList = "delete_btn";
+                set_picture_area_btn.type = 'button';
+                set_picture_area_btn.value = "圖片新增";
+                set_picture_area_btn.classList = "set_btn";
+                picture_area.appendChild(delete_picture_area_btn);
+                picture_area.appendChild(set_picture_area_btn);
+                for (let i = 0; i < target_block.childNodes.length; i++) {
+                    if (target_block.childNodes.length == 1){
+                        target_block.appendChild(picture_area);
+                        break;
+                    }
+                    if (dropX < target_block.childNodes[i].offsetLeft){
+                        target_block.insertBefore(picture_area,target_block.childNodes[i]);
+                        break;
+                    }
+                    if (dropX > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                        target_block.appendChild(picture_area);
+                        break;
+                    }
+                }
+
+                picture_area.ondragend = function (){
+                    let x = event.pageX
+                    for (let i = 0; i < target_block.childNodes.length; i++) {
+                        if (x < target_block.childNodes[i].offsetLeft){
+                            target_block.insertBefore(event.target,target_block.childNodes[i]);
+                            break;
+                        }
+                        if (x > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                            target_block.appendChild(event.target);
+                            break;
+                        }
+                    }
+                    event.stopPropagation()
+                }
+
+                delete_picture_area_btn.onclick = function (){
+                    target_block.removeChild(event.target.parentElement);
+                }
+
+                set_picture_area_btn.onclick = function (){
+                    let set_picture_area = event.target.parentElement;
+                    set_picture.style.display = "flex";
+                    set_picture.style.flexDirection = "column";
+                    picture_onload.onchange = function(){
+                        let reader = new FileReader();
+                        let img = document.createElement('img');
+
+                        reader.onload = function (e){                               
+                            img.setAttribute("src", e.target.result)
+                        }
+                        reader.readAsDataURL(this.files[0]);
+
+                        pre_view_btn.onclick = function (){
+                            img.style.width = 300 + 'px';
+                            pre_viewer.appendChild(img)
+                        }
+                    }
+                    
+                    new_picture_sent.onclick = function (){
+                        pre_viewer.firstChild.style.width = img_size.value + 'px';
+                        set_picture_area.appendChild(pre_viewer.firstChild)
+                        set_picture.style.display = "none";
+                    }
+                }
+            }
+        
+            function create_video_area(dropX ,target_block){
+                let set_video = document.getElementById('set_video');
+                let new_video_sent = document.getElementById("new_video_sent");
+                let video_onload = document.getElementById("video_onload");
+                let video_size = document.getElementById("video_size");
+                let video_pre_view_btn = document.getElementById("video_pre_view_btn");
+                let video_pre_viewer = document.getElementById("video_pre_viewer");
+                let video_area = document.createElement('div');
+                let delete_video_area_btn = document.createElement('input');
+                let set_video_area_btn = document.createElement('input');
+                video_area.className= "video_area";
+                video_area.draggable="true"
+                delete_video_area_btn.type = 'button';
+                delete_video_area_btn.value = "刪除";
+                delete_video_area_btn.classList = "delete_btn";
+                set_video_area_btn.type = 'button';
+                set_video_area_btn.value = "新增影片";
+                set_video_area_btn.classList = "set_btn";
+                video_area.appendChild(delete_video_area_btn);
+                video_area.appendChild(set_video_area_btn);
+                for (let i = 0; i < target_block.childNodes.length; i++) {
+                    if (target_block.childNodes.length == 1){
+                        target_block.appendChild(video_area);
+                        break;
+                    }
+                    if (dropX < target_block.childNodes[i].offsetLeft){
+                        target_block.insertBefore(video_area,target_block.childNodes[i]);
+                        break;
+                    }
+                    if (dropX > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                        target_block.appendChild(video_area);
+                        break;
+                    }
+                }
+
+                video_area.ondragend = function (){
+                    let x = event.pageX
+                    for (let i = 0; i < target_block.childNodes.length; i++) {
+                        if (x < target_block.childNodes[i].offsetLeft){
+                            target_block.insertBefore(event.target,target_block.childNodes[i]);
+                            break;
+                        }
+                        if (x > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                            target_block.appendChild(event.target);
+                            break;
+                        }
+                    }
+                    event.stopPropagation()
+                }
+
+                delete_video_area_btn.onclick = function (){
+                    target_block.removeChild(event.target.parentElement);
+                }
+
+                set_video_area_btn.onclick = function (){
+                    let set_video_area = event.target.parentElement;
+                    set_video.style.display = "flex";
+                    set_video.style.flexDirection = "column";
+                    video_onload.onchange = function(){
+                        let reader = new FileReader();
+                        let video = document.createElement('video');
+                        video.controls = true;
+                        reader.onload = function (e){                               
+                            video.setAttribute("src", e.target.result)
+                        }
+                        reader.readAsDataURL(this.files[0]);
+
+                        video_pre_view_btn.onclick = function (){
+                            video.style.width = 300 + 'px';
+                            video_pre_viewer.appendChild(video)
+                        }
+                    }
+                    
+                    new_video_sent.onclick = function (){
+                        video_pre_viewer.firstChild.style.width = video_size.value + 'px';
+                        set_video_area.appendChild(video_pre_viewer.firstChild)
+                        set_video.style.display = "none";
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
