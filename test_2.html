@@ -102,6 +102,14 @@
                 min-width: 200px;
                 border: #ccc dashed;
             }
+
+            .div_area{
+                position: relative;
+                display: flex;
+                margin: 10px;
+                min-width: 200px;
+                border: #ccc dashed;
+            }
         </style>
     </head>
     <body>
@@ -220,6 +228,7 @@
                         <label for="link_text_in">連結網址:</label>
                         <input type="url"  id="link_text_in">
                         <button id="new_link_sent">送出</button>
+                        <button id="delete_link">刪除</button>
                     </div>
 
                     <div id="set_picture" style="display: none;">
@@ -230,6 +239,7 @@
                         <button id="pre_view_btn">預覽</button>
                         <div id="pre_viewer"></div>
                         <button id="new_picture_sent">送出</button>
+                        <button id="delete_picture">刪除</button>
                     </div>
 
                     <div id="set_video" style="display: none;">
@@ -240,6 +250,36 @@
                         <button id="video_pre_view_btn">預覽</button>
                         <div id="video_pre_viewer"></div>
                         <button id="new_video_sent">送出</button>
+                        <button id="delete_video">刪除</button>
+                    </div>
+
+                    <div id="set_div" style="display: none;">
+                        <label for="background_color">背景顏色:</label>
+                        <input type="color"  id="background_color">
+                        <label for="div_width">設定寬度:</label>
+                        <input type="number"  id="div_width">
+                        <label for="div_height">設定高度:</label>
+                        <input type="number"  id="div_height">
+                        <label for="border_style">邊線風格:</label>
+                        <select id="border_style">
+                            <option value="none">無邊框</option>
+                            <option value="dotted">原點</option>
+                            <option value="dashed">虛線</option>
+                            <option value="solid">實線</option>
+                            <option value="double">雙線</option>
+                            <option value="groove">雕刻</option>
+                            <option value="ridge">浮雕</option>
+                            <option value="inset">陷入</option>
+                            <option value="outset">突出</option>
+                        </select>
+                        <label for="border_color">邊線顏色</label>
+                        <input type="color"  id="border_color">
+                        <label for="border_width">邊線寬</label>
+                        <input type="number"  id="border_width">
+                        <label for="border_radius">圓角</label>
+                        <input type="number" id="border_radius">
+                        <button id="new_div_sent">送出</button>
+                        <button id="delete_div">刪除</button>
                     </div>
                 </div>
             </div>
@@ -303,7 +343,7 @@
                             create_link_area(dropX ,target_block);
                         break;}
                         case 'area':{
-                            console.log("area");
+                            create_div_area(dropX ,target_block);
                         break;}
                     }
                 }
@@ -726,10 +766,10 @@
                             delete_btn.onclick = function (){
                                 reset_btn_area.removeChild(reset_btn);
                                 reset_elem_selector.removeChild(reset_elem_selector.firstElementChild);
-                                if (set_btn_area.childNodes.length == 3){
-                                    set_btn_area.firstChild.style.display = "none";
-                                    set_btn.style.display = "none";
+                                if (reset_btn_area.childNodes.length == 3){
+                                    reset_btn_area.firstChild.style.display = "none";  
                                 }
+                                set_btn.style.display = "none";
                             }
 
                         }
@@ -742,9 +782,11 @@
                 let new_link_sent = document.getElementById("new_link_sent");
                 let link_name = document.getElementById("link_name");
                 let link_text_in = document.getElementById("link_text_in");
+                let delete_link = document.getElementById("delete_link");
                 let link_area = document.createElement('div');
                 let delete_link_area_btn = document.createElement('input');
                 let set_link_area_btn = document.createElement('input');
+                let reset_link_area_btn = document.createElement('input');
                 link_area.className= "link_area";
                 link_area.draggable="true"
                 delete_link_area_btn.type = 'button';
@@ -753,8 +795,13 @@
                 set_link_area_btn.type = 'button';
                 set_link_area_btn.value = "連結新增";
                 set_link_area_btn.classList = "set_btn";
+                reset_link_area_btn.type = 'button';
+                reset_link_area_btn.value = "編輯連結";
+                reset_link_area_btn.classList = "reset_btn";
+                link_area.appendChild(reset_link_area_btn);
                 link_area.appendChild(delete_link_area_btn);
                 link_area.appendChild(set_link_area_btn);
+                reset_link_area_btn.style.display = "none";
                 for (let i = 0; i < target_block.childNodes.length; i++) {
                     if (target_block.childNodes.length == 1){
                         target_block.appendChild(link_area);
@@ -799,8 +846,50 @@
                         new_link.href = link_text_in.value;
                         set_link.style.display = "none";
                         set_link_area.appendChild(new_link);
+                        if (set_link_area.childNodes.length !== 3){
+                            set_link_area.firstChild.style.display = "inline"
+                        }
                     }
 
+                    delete_link.onclick = function (){
+                        set_link.style.display = "none"; 
+                    }
+                }
+
+                reset_link_area_btn.onclick = function (){
+                    let reset_link_area = event.target.parentElement;
+                    let reset_link_ul = document.createElement('ul');
+                    for (let i = 3; i < reset_link_area.childNodes.length; i++){
+                        let reset_link_li = document.createElement('li')
+                        reset_link_li.id = i;
+                        reset_link_li.textContent = "編輯第" + (i-2) + "個連結";
+                        reset_link_ul.appendChild(reset_link_li);
+                        reset_elem_selector.appendChild(reset_link_ul);
+
+                        reset_link_li.onclick = function (){
+                            let reset_link = reset_link_area.childNodes[event.target.id];
+                            set_link.style.display = "flex";
+                            set_link.style.flexDirection = "column";
+                            link_name.value = reset_link.textContent;
+                            link_text_in.value = reset_link.href;
+                            new_link_sent.onclick = function (){
+                                reset_link.textContent = link_name.value;
+                                reset_link.href = link_text_in.value;
+                                set_link.style.display = "none";
+                                reset_elem_selector.removeChild(reset_elem_selector.firstChild);
+                            }
+                            delete_link.onclick = function (){
+                                reset_link_area.removeChild(reset_link);
+                                set_link.style.display = "none";
+                                reset_elem_selector.removeChild(reset_elem_selector.firstChild);
+                                if(reset_link_area.childNodes.length == 3){
+                                    reset_link_area.firstElementChild.style.display = "none";
+                                }
+                            }
+                        }
+
+
+                    }
                 }
             }
         
@@ -812,8 +901,10 @@
                 let pre_view_btn = document.getElementById("pre_view_btn");
                 let pre_viewer = document.getElementById("pre_viewer");
                 let picture_area = document.createElement('div');
+                let delete_picture = document.getElementById("delete_picture");
                 let delete_picture_area_btn = document.createElement('input');
                 let set_picture_area_btn = document.createElement('input');
+                let reset_picture_area_btn = document.createElement('input');
                 picture_area.className= "picture_area";
                 picture_area.draggable="true"
                 delete_picture_area_btn.type = 'button';
@@ -822,8 +913,13 @@
                 set_picture_area_btn.type = 'button';
                 set_picture_area_btn.value = "圖片新增";
                 set_picture_area_btn.classList = "set_btn";
+                reset_picture_area_btn.type = 'button';
+                reset_picture_area_btn.value = "編輯圖片";
+                reset_picture_area_btn.classList = "reset_btn";
+                picture_area.appendChild(reset_picture_area_btn);
                 picture_area.appendChild(delete_picture_area_btn);
                 picture_area.appendChild(set_picture_area_btn);
+                reset_picture_area_btn.style.display = "none"
                 for (let i = 0; i < target_block.childNodes.length; i++) {
                     if (target_block.childNodes.length == 1){
                         target_block.appendChild(picture_area);
@@ -881,6 +977,63 @@
                         pre_viewer.firstChild.style.width = img_size.value + 'px';
                         set_picture_area.appendChild(pre_viewer.firstChild)
                         set_picture.style.display = "none";
+                        if (set_picture_area.childNodes.length !== 3){
+                            set_picture_area.firstChild.style.display = "inline";
+                        }
+                    }
+
+                    delete_picture.onclick = function (){
+                        set_picture.style.display = "none";
+                    }
+                }
+
+                reset_picture_area_btn.onclick = function (){
+                    let reset_picture_area = event.target.parentElement;
+                    let reset_picture_ul = document.createElement('ul');
+                    for (let i = 3; i < reset_picture_area.childNodes.length; i++) {
+                        let reset_picture_li = document.createElement('li');
+                        reset_picture_li.id = i;
+                        reset_picture_li.textContent = "編輯第" + (i-2) + "張圖片";
+                        reset_picture_ul.appendChild(reset_picture_li);
+                        reset_elem_selector.appendChild(reset_picture_ul);
+
+                        reset_picture_li.onclick = function (){
+                            let reset_picture = reset_picture_area.childNodes[event.target.id];
+                            set_picture.style.display = "flex";
+                            set_picture.style.flexDirection = "column";
+                            
+                            picture_onload.onchange = function(){
+                                let reader = new FileReader();
+                                let reset_img = document.createElement('img');
+
+                                reader.onload = function (e){                               
+                                    reset_img.setAttribute("src", e.target.result)
+                                }
+                                reader.readAsDataURL(this.files[0]);
+
+                                pre_view_btn.onclick = function (){
+                                    reset_img.style.width = 300 + 'px';
+                                    pre_viewer.appendChild(reset_img)
+                                }
+                            }
+
+                            new_picture_sent.onclick = function (){
+                                pre_viewer.firstChild.style.width = img_size.value + 'px';
+                                reset_picture_area.replaceChild(pre_viewer.firstChild,reset_picture);
+                                set_picture.style.display = "none";
+                                reset_elem_selector.removeChild(reset_elem_selector.firstChild);
+                            }
+
+                            delete_picture.onclick = function (){
+                                reset_picture_area.removeChild(reset_picture);
+                                set_picture.style.display = "none";
+                                reset_elem_selector.removeChild(reset_elem_selector.firstChild);
+                                if (reset_picture_area.childNodes.length == 3){
+                                    reset_picture_area.firstChild.style.display = "none";
+                                }
+                            }
+                        }
+                        
                     }
                 }
             }
@@ -892,9 +1045,11 @@
                 let video_size = document.getElementById("video_size");
                 let video_pre_view_btn = document.getElementById("video_pre_view_btn");
                 let video_pre_viewer = document.getElementById("video_pre_viewer");
+                let delete_video = document.getElementById("delete_video");
                 let video_area = document.createElement('div');
                 let delete_video_area_btn = document.createElement('input');
                 let set_video_area_btn = document.createElement('input');
+                let reset_video_area_btn = document.createElement('input');
                 video_area.className= "video_area";
                 video_area.draggable="true"
                 delete_video_area_btn.type = 'button';
@@ -903,8 +1058,13 @@
                 set_video_area_btn.type = 'button';
                 set_video_area_btn.value = "新增影片";
                 set_video_area_btn.classList = "set_btn";
+                reset_video_area_btn.type = 'button';
+                reset_video_area_btn.value = "編輯影片";
+                reset_video_area_btn.classList = "reset_btn";
+                video_area.appendChild(reset_video_area_btn);
                 video_area.appendChild(delete_video_area_btn);
                 video_area.appendChild(set_video_area_btn);
+                reset_video_area_btn.style.display = "none";
                 for (let i = 0; i < target_block.childNodes.length; i++) {
                     if (target_block.childNodes.length == 1){
                         target_block.appendChild(video_area);
@@ -962,6 +1122,154 @@
                         video_pre_viewer.firstChild.style.width = video_size.value + 'px';
                         set_video_area.appendChild(video_pre_viewer.firstChild)
                         set_video.style.display = "none";
+                        if (set_video_area.childNodes.length !==3){
+                            reset_video_area_btn.style.display = "inline";
+                        }
+                    }
+
+                    delete_video.onclick = function (){
+                        set_video.style.display = "none";
+                    }
+
+                    reset_video_area_btn.onclick = function(){
+                        let reset_video_area = event.target.parentElement;
+                        let reset_video_ul = document.createElement('ul');
+                        for (let i = 3; i < reset_video_area.childNodes.length; i++) {
+                            let reset_video_li = document.createElement('li');
+                            reset_video_li.id = i;
+                            reset_video_li.textContent = "編輯第"+(i-2)+"部影片"
+                            reset_video_ul.appendChild(reset_video_li);
+                            reset_elem_selector.appendChild(reset_video_ul);
+
+                            reset_video_li.onclick = function (){
+                                let reset_video = reset_video_area.childNodes[event.target.id];
+                                set_video.style.display = "flex";
+                                set_video.style.flexDirection = "column";
+                                video_onload.onchange = function(){
+                                    let reader = new FileReader();
+                                    let video = document.createElement('video');
+                                    video.controls = true;
+                                    reader.onload = function (e){                               
+                                        video.setAttribute("src", e.target.result)
+                                    }
+                                    reader.readAsDataURL(this.files[0]);
+
+                                    video_pre_view_btn.onclick = function (){
+                                        video.style.width = 300 + 'px';
+                                        video_pre_viewer.appendChild(video)
+                                    }
+                                }
+
+                                new_video_sent.onclick = function (){
+                                    video_pre_viewer.firstChild.style.width = video_size.value + 'px';
+                                    reset_video_area.replaceChild(video_pre_viewer.firstChild,reset_video);
+                                    set_video.style.display = "none";
+                                    reset_elem_selector.removeChild(reset_elem_selector.firstChild);
+                                }
+
+                                delete_video.onclick = function (){
+                                    reset_video_area.removeChild(reset_video);
+                                    set_video.style.display = "none";
+                                    reset_elem_selector.removeChild(reset_elem_selector.firstChild);
+                                    if (reset_video_area.childNodes.length ===3){
+                                        reset_video_area_btn.style.display = "none";
+                                    }
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        
+            function create_div_area(dropX ,target_block){
+                let set_div = document.getElementById("set_div");
+                let background_color = document.getElementById("background_color");
+                let div_width = document.getElementById("div_width");
+                let div_height = document.getElementById("div_width");
+                let border_style = document.getElementById("border_style");
+                let border_color = document.getElementById("border_color");
+                let border_width = document.getElementById("border_width");
+                let border_radius = document.getElementById("border_radius");
+                let new_div_sent = document.getElementById("new_div_sent");
+                let delete_div = document.getElementById("delete_div");
+                let div_area = document.createElement('div');
+                let delete_div_area_btn = document.createElement('input');
+                let set_div_area_btn = document.createElement('input');
+                let reset_div_area_btn = document.createElement('input');
+                div_area.className= "div_area";
+                div_area.draggable="true"
+                delete_div_area_btn.type = 'button';
+                delete_div_area_btn.value = "刪除";
+                delete_div_area_btn.classList = "delete_btn";
+                set_div_area_btn.type = 'button';
+                set_div_area_btn.value = "新增區塊";
+                set_div_area_btn.classList = "set_btn";
+                reset_div_area_btn.type = 'button';
+                reset_div_area_btn.value = "編輯區塊";
+                reset_div_area_btn.classList = "reset_div";
+                div_area.appendChild(reset_div_area_btn);
+                div_area.appendChild(delete_div_area_btn);
+                div_area.appendChild(set_div_area_btn);
+                
+                reset_div_area_btn.style.display = "none";
+
+                for (let i = 0; i < target_block.childNodes.length; i++) {
+                    if (target_block.childNodes.length == 1){
+                        target_block.appendChild(div_area);
+                        break;
+                    }
+                    if (dropX < target_block.childNodes[i].offsetLeft){
+                        target_block.insertBefore(div_area,target_block.childNodes[i]);
+                        break;
+                    }
+                    if (dropX > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                        target_block.appendChild(div_area);
+                        break;
+                    }
+                }
+
+                div_area.ondragend = function (){
+                    let x = event.pageX
+                    console.log(target_block); 
+                    for (let i = 0; i < target_block.childNodes.length; i++) {
+                        if (x < target_block.childNodes[i].offsetLeft){
+                            target_block.insertBefore(event.target,target_block.childNodes[i]);
+                            break;
+                        }
+                        if (x > target_block.childNodes[i].offsetLeft && target_block.childNodes[i] === target_block.lastChild){
+                            target_block.appendChild(event.target);
+                            break;
+                        }
+                    }
+                    event.stopPropagation()
+                }
+
+                delete_div_area_btn.onclick = function (){
+                    target_block.removeChild(event.target.parentElement);
+                    if (div_area.childNodes.length == 3){
+                        reset_div_area_btn.style.display = "none";
+                    }
+                }
+
+                set_div_area_btn.onclick = function(){
+                    let set_div_area = event.target.parentElement;
+                    let new_div = document.createElement('div');
+                    set_div.style.display = "flex";
+                    set_div.style.flexDirection = "column";
+                    new_div_sent.onclick = function (){
+                        new_div.style.width = div_width.value + 'px';
+                        new_div.style.backgroundColor = background_color.value;
+                        new_div.style.height = div_height.value + 'px';
+                        new_div.style.borderColor = border_color.value
+                        new_div.style.borderStyle = border_style.value
+                        new_div.style.borderWidth = border_width.value + 'px';
+                        new_div.style.borderRadius = border_radius.value +  'px';
+                        set_div_area.appendChild(new_div);
+                        set_div.style.display = "none";
+
+                        
                     }
                 }
             }
