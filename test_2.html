@@ -131,8 +131,8 @@
                     <div id="set_text" style="display: none;">
                         <label for="type_select">文體:</label>
                         <select name="type_select" id="type_select">
-                            <option value="H1">大標題</option>
-                            <option value="H3">小標題</option>
+                            <option value="h1">大標題</option>
+                            <option value="h3">小標題</option>
                             <option value="p">文章</option>
                         </select>
                         <label for="font_type">特效:</label>
@@ -161,6 +161,7 @@
                         <textarea  id="text_in" cols="30" rows="10"></textarea>
                         <button id="text_sent">送出</button>
                         <button id="text_delete">刪除</button>
+                        <button id="text_cancel">取消</button>
                     </div>
 
                     <div id="set_list" style="display: none;">
@@ -181,9 +182,10 @@
                         <div>
                             <input type="text" id="new_li_text_in">
                             <button id="create_new_li_btn">新增</button>
-                        </div>                    
+                        </div>
                         <div id="list_pre_viewer"></div>
                         <button id="new_list_sent">送出</button>
+                        <button id="new_list_cancel">取消</button>
                     </div>
 
                     <div id="reset_list" style="display: none;">
@@ -213,6 +215,7 @@
                         </div>
                         <button id="reset_list_sent">完成編輯</button>
                         <button id="delete_list">刪除清單</button>
+                        <button id="reset_list_cancel">取消編輯</button>
                     </div>
 
                     <div id="set_btn" style="display: none;">
@@ -220,6 +223,7 @@
                         <input type="text" id="btn_text_in">
                         <button id="new_btn_sent">送出</button>
                         <button id="delete_btn">刪除</button>
+                        <button id="new_btn_cancel">取消</button>
                     </div>
 
                     <div id="set_link" style="display: none;">
@@ -229,6 +233,7 @@
                         <input type="url"  id="link_text_in">
                         <button id="new_link_sent">送出</button>
                         <button id="delete_link">刪除</button>
+                        <button id="new_link_cancel">取消</button>
                     </div>
 
                     <div id="set_picture" style="display: none;">
@@ -240,6 +245,7 @@
                         <div id="pre_viewer"></div>
                         <button id="new_picture_sent">送出</button>
                         <button id="delete_picture">刪除</button>
+                        <button id="new_picture_cancel">取消</button>
                     </div>
 
                     <div id="set_video" style="display: none;">
@@ -251,6 +257,7 @@
                         <div id="video_pre_viewer"></div>
                         <button id="new_video_sent">送出</button>
                         <button id="delete_video">刪除</button>
+                        <button id="new_video_cancel">取消</button>
                     </div>
 
                     <div id="set_div" style="display: none;">
@@ -280,6 +287,7 @@
                         <input type="number" id="border_radius">
                         <button id="new_div_sent">送出</button>
                         <button id="delete_div">刪除</button>
+                        <button id="new_div_cancel">取消</button>
                     </div>
                 </div>
             </div>
@@ -377,6 +385,7 @@
                 let text_in = document.getElementById("text_in");
                 let text_delete = document.getElementById("text_delete");
                 let text_sent = document.getElementById("text_sent");
+                let text_cancel = document. getElementById("text_cancel");
                 let text_area = document.createElement('div');
                 let delete_text_area_btn = document.createElement('input');
                 let set_text_area_btn = document.createElement('input');
@@ -440,6 +449,7 @@
                     let set_text_area = event.target.parentElement;
                     set_text.style.display = "flex";
                     set_text.style.flexDirection = "column";
+                    text_delete.style.display = "none";
   
                     text_sent.onclick = function (){
                         let text = document.createElement(type_select.value);
@@ -454,7 +464,7 @@
                         set_text.style.display = "none";
                     }
 
-                    text_delete.onclick = function (){
+                    text_cancel.onclick = function (){
                         set_text.style.display = "none";
                     }
                 };
@@ -478,25 +488,28 @@
                         let reset_text = reset_text_area.childNodes[event.target.id];
                         set_text.style.display = "flex";
                         set_text.style.flexDirection = "column";
-                        console.log(reset_text.firstChild);
+                        text_delete.style.display = "inline";
                         type_select.value = reset_text.tagName;
                         font_type.value = reset_text.firstChild.tagName;
                         font_family.value = reset_text.firstChild.style.fontFamily;
                         font_color.value = reset_text.firstChild.style.color;
-                        font_size.value = reset_text.firstChild.style.fontSize - 'px';
+                        font_size.value = reset_text.firstChild.style.fontSize.substr(1, 2);
                         text_in.value = reset_text.firstChild.textContent;
                         text_sent.onclick = function (){
-                            reset_text.tagName = type_select.value;
-                            reset_text.firstChild.tagName = font_type.value;
-                            reset_text.firstChild.style.fontFamily = font_family.value;
-                            reset_text.firstChild.style.color = font_color.value;
-                            reset_text.firstChild.style.fontSize = font_size.value + 'px';
-                            reset_text.firstChild.textContent = text_in.value;
+                            let new_text = document.createElement(type_select.value);
+                            let new_text_type = document.createElement(font_type.value);
+                            new_text_type.style.fontFamily = font_family.value;
+                            new_text_type.style.color = font_color.value;
+                            new_text_type.style.fontSize = font_size.value + 'px';
+                            new_text_type.textContent = text_in.value;
+                            new_text.appendChild(new_text_type);
+                            reset_text_area.replaceChild(new_text,reset_text);
                             set_text.style.display = "none";
                             if(reset_elem_selector.childNodes.length !== 0){
                                 reset_elem_selector.removeChild(reset_elem_selector.firstChild)
                             }
                         }
+
                         text_delete.onclick = function (){
                             reset_text_area.removeChild(reset_text);
                             set_text.style.display = "none";
@@ -504,9 +517,12 @@
                             if (reset_text_area.childNodes.length == 3){
                                 reset_text_area.firstChild.style.display = "none";
                             }
-                            if(reset_elem_selector.childNodes.length !== 0){
-                                reset_elem_selector.removeChild(reset_elem_selector.firstChild)
-                            }
+                            reset_elem_selector.removeChild(reset_elem_selector.firstChild)
+                        }
+
+                        text_cancel.onclick = function (){
+                            reset_elem_selector.removeChild(reset_elem_selector.firstChild)
+                            set_text.style.display = "none";
                         }
                       }
                     }
@@ -522,6 +538,7 @@
                 let list_pre_viewer = document.getElementById ("list_pre_viewer");
                 let list_delete = document.getElementById("list_delete");
                 let new_list_sent = document.getElementById ("new_list_sent");
+                let new_list_cancel = document.getElementById("new_list_cancel");
                 let type_enter_btn = document.getElementById ("type_enter_btn");
                 let list_style = document.getElementById("list_style");
                 let reset_list = document.getElementById("reset_list");
@@ -535,6 +552,7 @@
                 let sent_reset_li = document.getElementById("sent_reset_li");
                 let delete_li = document.getElementById("delete_li");
                 let reset_list_sent = document.getElementById("reset_list_sent");
+                let reset_list_cancel = document.getElementById("reset_list_cancel");
                 let delete_list = document.getElementById("delete_list");
                 let list_area = document.createElement('div');
                 let delete_list_area_btn = document.createElement('input');
@@ -601,8 +619,6 @@
                         list_pre_viewer.appendChild(new_list);
                     }
 
-                    
-
                     create_new_li_btn.onclick = function (){
                         let new_li = document.createElement('li');
                         new_li.textContent = new_li_text_in.value;
@@ -611,7 +627,8 @@
                             new_li.style.margin = 5 + 'px';
                         }
                         list_pre_viewer.lastElementChild.appendChild(new_li);
-                    }                  
+                    }
+
                     new_list_sent.onclick = function (){
                         set_list.style.display = "none";
                         set_list_area.appendChild(new_list);
@@ -619,11 +636,21 @@
                             set_list_area.firstChild.style.display = "inline";
                         }
                     }
+
+                    new_list_cancel.onclick = function (){
+                        set_list.style.display = "none";
+                        if (list_pre_viewer.childNodes.length !== 0){
+                            list_pre_viewer.removeChild(list_pre_viewer.firstChild);
+                        }
+                    }
                 }
 
                 reset_list_area_btn.onclick = function (){
                     let reset_list_area = event.target.parentElement;
                     let reset_list_ul = document.createElement('ul');
+                    if(reset_elem_selector.childNodes.length !== 0){
+                        reset_elem_selector.removeChild(reset_elem_selector.firstChild)
+                    }
                     for (let i = 3; i < reset_list_area.childNodes.length; i++) {
                         let reset_list_li = document.createElement('li');
                         reset_list_li.id = i;
@@ -634,8 +661,8 @@
                         reset_list_li.onclick = function (){
                             reset_list.style.display = "flex";
                             reset_list.style.flexDirection = "column";
-                            let reset_ul = reset_list_area.childNodes[event.target.id];
-                            let pre_reset_ul = reset_ul.nextElementSibling;
+                            let pre_reset_ul = reset_list_area.childNodes[event.target.id];
+                            let reset_ul = pre_reset_ul.cloneNode(true);
                             let reset_li = reset_ul.childNodes;
                             reset_li_previewer.appendChild(reset_ul);
                             sent_new_li.onclick = function (){
@@ -645,7 +672,7 @@
                             }
 
                             reset_list_sent.onclick = function (){
-                                reset_list_area.insertBefore(reset_ul,pre_reset_ul);
+                                reset_list_area.replaceChild(reset_ul,pre_reset_ul);
                                 if(reset_elem_selector.childNodes.length !== 0){
                                     reset_elem_selector.removeChild(reset_elem_selector.firstChild)
                                 }
@@ -653,7 +680,7 @@
                             }
 
                             delete_list.onclick = function (){
-                                reset_li_previewer.removeChild(reset_ul)
+                                reset_list_area.removeChild(pre_reset_ul);
                                 if(reset_elem_selector.childNodes.length !== 0){
                                     reset_elem_selector.removeChild(reset_elem_selector.firstChild)
                                 }
@@ -661,6 +688,12 @@
                                 if(reset_list_area.childNodes.length == 3){
                                     reset_list_area.firstChild.style.display = "none";
                                 }
+                            }
+
+                            reset_list_cancel.onclick = function (){
+                                reset_li_previewer.removeChild(reset_ul);
+                                reset_elem_selector.removeChild(reset_elem_selector.firstChild);
+                                reset_list.style.display = "none";
                             }
                         }
                     }
@@ -674,6 +707,7 @@
                 let set_btn_area_btn = document.createElement('input');
                 let reset_btn_area_btn = document.createElement('input');
                 let new_btn_sent = document.getElementById("new_btn_sent");
+                let new_btn_cancel = document.getElementById("new_btn_cancel");
                 let delete_btn = document.getElementById("delete_btn");
                 let btn_text_in = document.getElementById("btn_text_in");
                 btn_area.className= "btn_area";
@@ -729,6 +763,7 @@
                     let set_btn_area = event.target.parentElement;
                     set_btn.style.display = "flex";
                     set_btn.style.flexDirection = "column";
+                    delete_btn.style.display = "none";
                     new_btn_sent.onclick = function (){
                         let new_btn = document.createElement('button');
                         new_btn.textContent = btn_text_in.value;
@@ -738,7 +773,7 @@
                             set_btn_area.firstChild.style.display = "inline";
                         }
                     }
-                    delete_btn.onclick = function (){
+                    new_btn_cancel.onclick = function (){
                         set_btn.style.display = "none";
                     }
                 }
@@ -746,6 +781,9 @@
                 reset_btn_area_btn.onclick = function (){
                     let reset_btn_area = event.target.parentElement
                     let reset_btn_ul = document.createElement('ul');
+                    if(reset_elem_selector.childNodes.length !== 0){
+                        reset_elem_selector.removeChild(reset_elem_selector.firstChild)
+                    }
                     for (let i = 3; i < reset_btn_area.childNodes.length; i++) {
                         let reset_btn_li = document.createElement('li');
                         reset_btn_li.id = i ;
@@ -757,18 +795,24 @@
                             let reset_btn = reset_btn_area.childNodes[event.target.id];
                             set_btn.style.display = "flex";
                             set_btn.style.flexDirection = "column";
+                            delete_btn.style.display = "inline";
                             btn_text_in.value = reset_btn.textContent ;
                             new_btn_sent.onclick = function (){
                                 reset_btn.textContent = btn_text_in.value;
                                 reset_elem_selector.removeChild(reset_elem_selector.firstElementChild);
                                 set_btn.style.display = "none";
                             }
+
                             delete_btn.onclick = function (){
                                 reset_btn_area.removeChild(reset_btn);
                                 reset_elem_selector.removeChild(reset_elem_selector.firstElementChild);
                                 if (reset_btn_area.childNodes.length == 3){
                                     reset_btn_area.firstChild.style.display = "none";  
                                 }
+                                set_btn.style.display = "none";
+                            }
+                            new_btn_cancel.onclick = function (){
+                                reset_elem_selector.removeChild(reset_elem_selector.firstElementChild);
                                 set_btn.style.display = "none";
                             }
 
@@ -780,6 +824,7 @@
             function create_link_area(dropX ,target_block){
                 let set_link = document.getElementById('set_link');
                 let new_link_sent = document.getElementById("new_link_sent");
+                let new_link_cancel = document.getElementById("new_link_cancel");
                 let link_name = document.getElementById("link_name");
                 let link_text_in = document.getElementById("link_text_in");
                 let delete_link = document.getElementById("delete_link");
@@ -840,6 +885,7 @@
                     let set_link_area = event.target.parentElement;
                     set_link.style.display = "flex";
                     set_link.style.flexDirection = "column";
+                    delete_link.style.display = "none";
                     new_link_sent.onclick = function (){
                         let new_link = document.createElement('a');
                         new_link.textContent = link_name.value;
@@ -851,7 +897,7 @@
                         }
                     }
 
-                    delete_link.onclick = function (){
+                    new_link_cancel.onclick = function (){
                         set_link.style.display = "none"; 
                     }
                 }
@@ -859,6 +905,9 @@
                 reset_link_area_btn.onclick = function (){
                     let reset_link_area = event.target.parentElement;
                     let reset_link_ul = document.createElement('ul');
+                    if(reset_elem_selector.childNodes.length !== 0){
+                        reset_elem_selector.removeChild(reset_elem_selector.firstChild)
+                    }
                     for (let i = 3; i < reset_link_area.childNodes.length; i++){
                         let reset_link_li = document.createElement('li')
                         reset_link_li.id = i;
@@ -870,6 +919,7 @@
                             let reset_link = reset_link_area.childNodes[event.target.id];
                             set_link.style.display = "flex";
                             set_link.style.flexDirection = "column";
+                            delete_link.style.display = "inline";
                             link_name.value = reset_link.textContent;
                             link_text_in.value = reset_link.href;
                             new_link_sent.onclick = function (){
@@ -886,6 +936,10 @@
                                     reset_link_area.firstElementChild.style.display = "none";
                                 }
                             }
+                            new_link_cancel.onclick = function (){
+                                reset_elem_selector.removeChild(reset_elem_selector.firstChild);
+                                set_link.style.display = "none"; 
+                            }
                         }
 
 
@@ -896,6 +950,7 @@
             function create_picture_area(dropX ,target_block){
                 let set_picture = document.getElementById('set_picture');
                 let new_picture_sent = document.getElementById("new_picture_sent");
+                let new_picture_cancel = document.getElementById("new_picture_cancel");
                 let picture_onload = document.getElementById("picture_onload");
                 let img_size = document.getElementById("img_size");
                 let pre_view_btn = document.getElementById("pre_view_btn");
@@ -958,6 +1013,7 @@
                     let set_picture_area = event.target.parentElement;
                     set_picture.style.display = "flex";
                     set_picture.style.flexDirection = "column";
+                    delete_picture.style.display = "none";
                     picture_onload.onchange = function(){
                         let reader = new FileReader();
                         let img = document.createElement('img');
@@ -982,7 +1038,8 @@
                         }
                     }
 
-                    delete_picture.onclick = function (){
+                    new_picture_cancel.onclick = function (){
+                        pre_viewer.removeChild(pre_viewer.firstChild);
                         set_picture.style.display = "none";
                     }
                 }
@@ -990,6 +1047,9 @@
                 reset_picture_area_btn.onclick = function (){
                     let reset_picture_area = event.target.parentElement;
                     let reset_picture_ul = document.createElement('ul');
+                    if(reset_elem_selector.childNodes.length !== 0){
+                        reset_elem_selector.removeChild(reset_elem_selector.firstChild)
+                    }
                     for (let i = 3; i < reset_picture_area.childNodes.length; i++) {
                         let reset_picture_li = document.createElement('li');
                         reset_picture_li.id = i;
@@ -1001,7 +1061,7 @@
                             let reset_picture = reset_picture_area.childNodes[event.target.id];
                             set_picture.style.display = "flex";
                             set_picture.style.flexDirection = "column";
-                            
+                            delete_picture.style.display = "inline";
                             picture_onload.onchange = function(){
                                 let reader = new FileReader();
                                 let reset_img = document.createElement('img');
@@ -1032,6 +1092,12 @@
                                     reset_picture_area.firstChild.style.display = "none";
                                 }
                             }
+
+                            new_picture_cancel.onclick = function (){
+                                pre_viewer.removeChild(pre_viewer.firstChild);
+                                set_picture.style.display = "none";
+                                reset_elem_selector.removeChild(reset_elem_selector.firstChild);  
+                            }
                         }
                         
                     }
@@ -1041,6 +1107,7 @@
             function create_video_area(dropX ,target_block){
                 let set_video = document.getElementById('set_video');
                 let new_video_sent = document.getElementById("new_video_sent");
+                let new_video_cancel = document.getElementById("new_video_cancel");
                 let video_onload = document.getElementById("video_onload");
                 let video_size = document.getElementById("video_size");
                 let video_pre_view_btn = document.getElementById("video_pre_view_btn");
@@ -1103,6 +1170,7 @@
                     let set_video_area = event.target.parentElement;
                     set_video.style.display = "flex";
                     set_video.style.flexDirection = "column";
+                    delete_video.style.display = "none";
                     video_onload.onchange = function(){
                         let reader = new FileReader();
                         let video = document.createElement('video');
@@ -1127,60 +1195,72 @@
                         }
                     }
 
-                    delete_video.onclick = function (){
+                    new_video_cancel.onclick = function (){
+                        video_pre_viewer.removeChild(video_pre_viewer.firstChild);
                         set_video.style.display = "none";
                     }
+                }
 
-                    reset_video_area_btn.onclick = function(){
-                        let reset_video_area = event.target.parentElement;
-                        let reset_video_ul = document.createElement('ul');
-                        for (let i = 3; i < reset_video_area.childNodes.length; i++) {
-                            let reset_video_li = document.createElement('li');
-                            reset_video_li.id = i;
-                            reset_video_li.textContent = "編輯第"+(i-2)+"部影片"
-                            reset_video_ul.appendChild(reset_video_li);
-                            reset_elem_selector.appendChild(reset_video_ul);
+                reset_video_area_btn.onclick = function(){
+                    let reset_video_area = event.target.parentElement;
+                    let reset_video_ul = document.createElement('ul');
+                    if(reset_elem_selector.childNodes.length !== 0){
+                        reset_elem_selector.removeChild(reset_elem_selector.firstChild)
+                    }
+                    for (let i = 3; i < reset_video_area.childNodes.length; i++) {
+                        let reset_video_li = document.createElement('li');
+                        reset_video_li.id = i;
+                        reset_video_li.textContent = "編輯第"+(i-2)+"部影片"
+                        reset_video_ul.appendChild(reset_video_li);
+                        reset_elem_selector.appendChild(reset_video_ul);
 
-                            reset_video_li.onclick = function (){
-                                let reset_video = reset_video_area.childNodes[event.target.id];
-                                set_video.style.display = "flex";
-                                set_video.style.flexDirection = "column";
-                                video_onload.onchange = function(){
-                                    let reader = new FileReader();
-                                    let video = document.createElement('video');
-                                    video.controls = true;
-                                    reader.onload = function (e){                               
-                                        video.setAttribute("src", e.target.result)
-                                    }
-                                    reader.readAsDataURL(this.files[0]);
-
-                                    video_pre_view_btn.onclick = function (){
-                                        video.style.width = 300 + 'px';
-                                        video_pre_viewer.appendChild(video)
-                                    }
+                        reset_video_li.onclick = function (){
+                            let reset_video = reset_video_area.childNodes[event.target.id];
+                            set_video.style.display = "flex";
+                            set_video.style.flexDirection = "column";
+                            delete_video.style.display = "inline";
+                            video_onload.onchange = function(){
+                                let reader = new FileReader();
+                                let video = document.createElement('video');
+                                video.controls = true;
+                                reader.onload = function (e){                               
+                                    video.setAttribute("src", e.target.result)
                                 }
+                                reader.readAsDataURL(this.files[0]);
 
-                                new_video_sent.onclick = function (){
-                                    video_pre_viewer.firstChild.style.width = video_size.value + 'px';
-                                    reset_video_area.replaceChild(video_pre_viewer.firstChild,reset_video);
-                                    set_video.style.display = "none";
-                                    reset_elem_selector.removeChild(reset_elem_selector.firstChild);
+                                video_pre_view_btn.onclick = function (){
+                                    video.style.width = 300 + 'px';
+                                    video_pre_viewer.appendChild(video)
                                 }
+                            }
 
-                                delete_video.onclick = function (){
-                                    reset_video_area.removeChild(reset_video);
-                                    set_video.style.display = "none";
-                                    reset_elem_selector.removeChild(reset_elem_selector.firstChild);
-                                    if (reset_video_area.childNodes.length ===3){
-                                        reset_video_area_btn.style.display = "none";
-                                    }
+                            new_video_sent.onclick = function (){
+                                video_pre_viewer.firstChild.style.width = video_size.value + 'px';
+                                reset_video_area.replaceChild(video_pre_viewer.firstChild,reset_video);
+                                set_video.style.display = "none";
+                                reset_elem_selector.removeChild(reset_elem_selector.firstChild);
+                            }
 
+                            delete_video.onclick = function (){
+                                reset_video_area.removeChild(reset_video);
+                                set_video.style.display = "none";
+                                reset_elem_selector.removeChild(reset_elem_selector.firstChild);
+                                if (reset_video_area.childNodes.length ===3){
+                                    reset_video_area_btn.style.display = "none";
                                 }
 
                             }
+
+                            new_video_cancel.onclick = function (){
+                                video_pre_viewer.removeChild(video_pre_viewer.firstChild);
+                                set_video.style.display = "none";
+                                reset_elem_selector.removeChild(reset_elem_selector.firstChild);
+                            }
+
                         }
                     }
                 }
+                
             }
         
             function create_div_area(dropX ,target_block){
@@ -1193,6 +1273,7 @@
                 let border_width = document.getElementById("border_width");
                 let border_radius = document.getElementById("border_radius");
                 let new_div_sent = document.getElementById("new_div_sent");
+                let new_div_cancel = document.getElementById("new_div_cancel");
                 let delete_div = document.getElementById("delete_div");
                 let div_area = document.createElement('div');
                 let delete_div_area_btn = document.createElement('input');
@@ -1269,8 +1350,45 @@
                         set_div_area.appendChild(new_div);
                         set_div.style.display = "none";
 
-                        
+                        /*new_div.ondragover = function (event) {
+                            event.dataTransfer.dropEffect = 'move';
+                            event.preventDefault();
+                        }
+
+                        new_div.addEventListener('drop', function (event){
+                            let data = event.dataTransfer.getData(Type);
+                            let dropX = event.pageX;
+                            let target_block = event.target;
+                            switch (data){
+                                case "text":{
+                                    create_text_area(dropX ,target_block);
+                                break;}
+                                case 'picture':{
+                                    create_picture_area(dropX ,target_block);
+                                break;}
+                                case 'list':{
+                                    create_list_area(dropX ,target_block);
+                                break;}
+                                case 'video':{
+                                    create_video_area(dropX ,target_block);
+                                break;}
+                                case 'button':{
+                                    create_btn_area(dropX ,target_block);
+                                break;}
+                                case 'link':{
+                                    create_link_area(dropX ,target_block);
+                                break;}
+                                case 'area':{
+                                    create_div_area(dropX ,target_block);
+                                break;}
+                            }
+                        })*/
+                      
                     }
+
+                    new_div_cancel.onclick = function (){
+                            set_div.style.display = "none";
+                        }
                 }
             }
         </script>
