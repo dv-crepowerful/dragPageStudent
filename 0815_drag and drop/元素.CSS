@@ -1,0 +1,96 @@
+body{
+  display: flex;
+  flex-direction:row;
+}
+#menu{
+  width: 20%;
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction:column;
+  align-items:center; 
+}
+#div1{
+   float: left;/*浮動區域(只可左右)*/
+   width: 80%;
+   height: auto;
+   min-height: 975px;
+   padding:5px 0px 5px 1%; /*邊距*/
+   background-color: #a2d0be;
+   display:flex;
+   align-items:flex-start; /*垂直對齊方式*/
+   /* justify-content:center;  */
+   justify-content:flex-start; /*水平對齊方式*/
+   flex-direction:row;
+   flex-wrap:wrap;
+   align-content:flex-start;
+}
+#div1.hightlight{
+  border-color: #ddd;
+}
+.new_p{
+  word-wrap: break-word;/*自動換行*/
+}
+.menu_li{
+  border: 3px solid white;
+  width: 85%;
+  padding: 2px;
+  margin-bottom: 10px;
+  list-style-type:none;
+  font-size: 20px;
+  display: inline-block;
+  border-radius:8px;
+}
+#change_button{
+  width: 50%;
+  height: 30px;
+}
+#new_p_set,#new_btn_set,#new_img_set,#new_h1_set,#new_ol_set,
+#h1_edit,#p_edit,#img_edit,#new_btn_edit,#li_edit
+{
+  border: 1px solid white;
+  width: 90%;
+  border-radius:5px;
+  padding: 5px;
+}
+.thumbnail{
+  width: 70%; 
+  height: auto;
+  display: block;
+  margin: auto;
+}
+#result{
+  display: flex;
+  justify-content:center;
+  flex-direction:column;
+}
+button:hover{
+  background-color:#ddd;
+}
+#clean_all{
+  width: 70%;
+  height: 30px;
+  font-size:15px;
+}
+#preview_ol{
+  width:95%;
+  margin-top:5px;
+  margin-right:2.5%;
+  margin-left:2.5%; 
+  min-height:100px;
+  height:auto;
+  border: 1px solid white;
+  display: flex;
+  box-sizing: border-box;
+}
+#li_type_btn{
+  width: 70px;
+}
+#preview_ol{
+  display: flex;
+  flex-direction:column;
+  flex-wrap:wrap;
+}
+
+
+

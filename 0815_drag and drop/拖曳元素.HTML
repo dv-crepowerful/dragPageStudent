@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <script src="元素.JS"></script>
+        <link href="元素.CSS" rel='stylesheet'>
+    </head>
+    <body>
+    <div id="menu">
+      <h2 style="text-align: center;">請選擇一個元素拖曳</h2>
+      <ol ondragstart="dragStartHandler(event)">  <!--使元素可拖動-->
+        <li class="menu_li" draggable="true" data-value="h1">新增標題</li>
+        <li class="menu_li" draggable="true" data-value="p">新增內文</li> <!--新新增全新屬性(dat-*)來自定屬性-->
+        <li class="menu_li" draggable="true" data-value="ol">新增清單</li>
+        <li class="menu_li" draggable="true" data-value="img">新增圖片</li>
+        <li class="menu_li" draggable="true" data-value="button">新增按鈕</li>
+      </ol>
+
+      <button id="clean_all">全部清除</button><br>
+
+      <div id="new_p_set" style="display:none;">
+        <div style="display:flex; flex-direction:column;">
+          <label for="p_font_family">字體選擇</label>
+          <select class="form1" id="p_font_family" name="p_font_family">
+            <option>請選擇</option>
+            <option value="DFKai-sb">標楷體</option>
+            <option value="PMingLiU">新細明體</option>
+            <option value="Microsoft JhengHei">微軟正黑體</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Arial Black">Arial Black</option>
+          </select><br/>
+          <label for="p_font_size">字體大小</label>
+          <input type="number" name="p_font_size" id="p_font_size" value="20"><br>
+          <label for="p_color_selector">字體顏色</label>
+          <input type="color" name="p_color_selector" id="p_color_selector"><br>
+          <label for="p_text_align">對齊方式</label>
+          <select class="form4" id="p_text_align" name="p_text_align">
+            <option>請選擇</option>
+            <option value="left">靠左</option>
+            <option value="center">置中</option> 
+            <option value="right">靠右</option>
+          </select><br>
+          <label for="text_in_p">輸入文字：</label>
+          <textarea name="text_in_p" id="text_in_p" cols="30" row="10"></textarea>
+        </div><br>
+        <button id="sent_p">確定</button>
+        <button id="cancel_p">取消</button>
+      </div>
+
+      <div id="p_edit" style="display:none;">
+        <div style="display:flex; flex-direction:column;">
+          <label for="p_font_family_edit">字體選擇</label>
+          <select class="form1" id="p_font_family_edit" name="p_font_family_edit">
+            <option>請選擇</option>
+            <option value="DFKai-sb">標楷體</option>
+            <option value="PMingLiU">新細明體</option>
+            <option value="Microsoft JhengHei">微軟正黑體</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Arial Black">Arial Black</option>
+          </select><br/>
+          <label for="p_font_size_edit">字體大小</label>
+          <input type="number" name="p_font_size_edit" id="p_font_size_edit" value="20"><br>
+          <label for="p_color_selector_edit">字體顏色</label>
+          <input type="color" name="p_color_selector_edit" id="p_color_selector_edit"><br>
+          <label for="p_text_align_edit">對齊方式</label>
+          <select class="form4" id="p_text_align_edit" name="p_text_align_edit">
+            <option>請選擇</option>
+            <option value="left">靠左</option>
+            <option value="center">置中</option> 
+            <option value="right">靠右</option>
+          </select><br>
+          <label for="text_in_pedit">請輸入更改的內容：</label>
+          <textarea name="text_in_pedit" id="text_in_pedit" cols="30" row="10"></textarea>
+        </div><br>
+        <button id="sent_edit_p">更改</button>
+        <button id="cancel_edit_p">取消</button>
+      </div>
+
+      <div id="new_h1_set" style="display:none;">
+        <div style="display:flex; flex-direction:column;">
+          <label for="h_type">標題類型(標題大小)</label>
+          <select id="h_type" name="h_type">
+            <option>請選擇</option>
+            <option value="h1">標題1</option>
+            <option value="h2">標題2</option>
+            <option value="h3">標題3</option>
+            <option value="h4">標題4</option>
+            <option value="h5">標題5</option>
+            <option value="h6">標題6</option>
+          </select><br>
+          <label for="h1_font_family">字體選擇</label>
+          <select class="form1" id="h1_font_family" name="h1_font_family">
+            <option>請選擇</option>
+            <option value="DFKai-sb">標楷體</option>
+            <option value="PMingLiU">新細明體</option>
+            <option value="Microsoft JhengHei">微軟正黑體</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Arial Black">Arial Black</option>
+          </select><br>
+          <label for="h1_color_selector">字體顏色</label>
+          <input type="color" name="h1_color_selector" id="h1_color_selector"><br>
+          <label for="h1_text_align">對齊方式</label>
+          <select class="form4" id="h1_text_align" name="h1_text_align">
+            <option>請選擇</option>
+            <option value="left">靠左</option>
+            <option value="center">置中</option>
+            <option value="right">靠右</option>
+          </select><br>
+          <label for="text_in_h1">輸入文字：</label>
+          <textarea name="text_in_h1" id="text_in_h1" cols="30" row="10"></textarea>
+        </div><br>
+        <button id="sent_h1">確定</button>
+        <button id="cancel_h1">取消</button>
+      </div>
+
+      <div id="h1_edit" style="display:none;">
+        <div style="display:flex; flex-direction:column;">
+          <label for="h1_font_family_edit">字體選擇</label>
+          <select id="h1_font_family_edit" name="h1_font_family_edit">
+            <option>請選擇</option>
+            <option value="DFKai-sb">標楷體</option>
+            <option value="PMingLiU">新細明體</option>
+            <option value="Microsoft JhengHei">微軟正黑體</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Arial Black">Arial Black</option>
+          </select><br>
+          <label for="h1_color_selector_edit">字體顏色</label>
+          <input type="color" name="h1_color_selector_edit" id="h1_color_selector_edit"><br>
+          <label for="h1_text_align_edit">對齊方式</label>
+          <select class="form4" id="h1_text_align_edit" name="h1_text_align_edit">
+            <option>請選擇</option>
+            <option value="left">靠左</option>
+            <option value="center">置中</option>
+            <option value="right">靠右</option>
+          </select><br>
+          <label for="text_in_h1edit">請輸入更改的內容：</label>
+          <textarea name="text_in_h1edit" id="text_in_h1edit" cols="30" row="10"></textarea>
+        </div><br>
+        <button id="sent_edit_h1">更改</button>
+        <button id="cancel_edit_h1">取消</button>
+      </div>
+
+      <div id="new_ol_set" style="display:none; flex-direction:column;">
+        <div id="li_type_set" style="display:flex; flex-direction:column;">
+          <label for="li_type">請選擇清單樣式</label>
+          <select id="li_type" name="li_type">
+            <option value="">請選擇</option>
+            <option value="ol">ol形式</option>
+            <option value="ul">ul形式</option>
+          </select><br>
+          <button id="li_type_btn">下一步</button>
+        </div>
+
+        <div id="li_set" style="display:block;">
+          <div style="display:flex; flex-direction:column;">
+          <div id="preview_ol">
+            <p id="show_type" style="text-align:center;"></p>
+          </div><br>
+          <div id="ol_style" style="display:flex; flex-direction:column;">
+            <label for="ol_font_size">字體大小</label>
+            <input type="number" name="ol_font_size" id="ol_font_size" value="20">
+            <label for="ol_type">符號樣式</label>
+            <select id="ol_type" name="ol_type">
+              <option>請選擇</option>
+              <optgroup label="ol形式">
+              <option value="1">數字</option>
+              <option value="a">英文(小寫)</option>
+              <option value="A">英文(大寫)</option>
+              <option value="i">羅馬數字(小寫)</option>
+              <option value="I">羅馬數字(大寫)</option>
+              </optgroup>
+              <optgroup label="ul形式">
+                <option value="disc">圓點</option>
+                <option value="circle">空心圓點</option>
+                <option value="square">方形</option>
+                <option value="none">無</option>
+              </optgroup>
+            </select>
+            <label for="ol_font_family">字體選擇</label>
+            <select id="ol_font_family" name="ol_font_family">
+              <option>請選擇</option>
+              <option value="DFKai-sb">標楷體</option>
+              <option value="PMingLiU">新細明體</option>
+              <option value="Microsoft JhengHei">微軟正黑體</option>
+              <option value="Times New Roman">Times New Roman</option>
+              <option value="Arial Black">Arial Black</option>
+            </select>
+          </div><br>
+          <label for="text_in_olli">新增一個項目</label>
+          <textarea name="text_in_olli" id="text_in_olli" cols="30" row="5"></textarea>
+        </div>
+        <button id="sent_olli" style="margin-bottom:5px; margin-top:5px;">新增項目</button>
+        <button id="delete_olli"  style="margin-bottom:5px; margin-top:5px;">刪除項目</button><br>
+        <button id="sent_ol">確定</button>
+        <button id="cancel_ol">取消</button>
+        </div>  
+      </div>
+
+      <div id="li_edit" style="display:none">
+        <div>
+            <!-- <label for="ol_color_select_edit">字體顏色</label>
+            <input type="color" name="ol_color_select_edit" id="ol_color_select_edit"><br> -->
+            <label for="ol_font_size_edit">字體大小</label>
+            <input type="number" name="ol_font_size_edit" id="ol_font_size_edit" value="20"><br>
+            <label for="ol_font_family_edit">字體選擇</label>
+              <select id="ol_font_family_edit" name="ol_font_family_edit">
+                <option>請選擇</option>
+                <option value="DFKai-sb">標楷體</option>
+                <option value="PMingLiU">新細明體</option>
+                <option value="Microsoft JhengHei">微軟正黑體</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Arial Black">Arial Black</option>
+              </select>
+        </div><br>
+        <button id="sent_edit_li">確定</button>
+        <button id="cancel_edit_li">取消</button>
+    </div>
+
+      <div id="new_btn_set" style="display:none;">
+        <div style="display:flex; flex-direction:column;">
+          <label for="btn_color_selector">按鈕顏色選擇</label>
+          <input type="color" name="btn_color_selector" id="btn_color_selector"><br>
+          <label for="btnfont_color_selector">字體顏色選擇</label>
+          <input type="color" name="btnfont_color_selector" id="btnfont_color_selector" value="#ffffff"><br>
+          <label for="btn_size">按鈕大小</label>
+          <input type="number" name="btn_size" id="btn_size"><br>
+          <label for="btn_border_radius">按鈕弧度大小</label>
+          <select class="form3" id="btn_border_radius" name="btn_border_radius"><br>
+            <option>請選擇</option>
+            <option value="2px">2px</option>
+            <option value="8px">8px</option>
+            <option value="10px">10px</option>
+            <option value="15px">15px</option>
+            <option value="50%">50%</option>
+          </select><br>
+          <label for="text_in_btn">按鈕名稱</label>
+          <textarea name="text_in_btn" id="text_in_btn" cols="30" row="10"></textarea>                     
+        </div><br> 
+        <button id="sent_btn">確定</button>
+        <button id="cancel_btn">取消</button>
+      </div>
+
+      <div id="new_btn_edit" style="display:none;">
+        <div style="display:flex; flex-direction:column;">
+          <label for="btn_color_selector_edit">按鈕顏色選擇</label>
+          <input type="color" name="btn_color_selector_edit" id="btn_color_selector_edit"><br>
+          <label for="btnfont_color_selector_edit">字體顏色選擇</label>
+          <input type="color" name="btnfont_color_selector_edit" id="btnfont_color_selector_edit" value="#ffffff"><br>
+          <label for="btn_size_edit">按鈕大小</label>
+          <input type="number" name="btn_size_edit" id="btn_size_edit"><br>
+          <label for="btn_border_radius_edit">按鈕弧度大小</label>
+          <select class="form3" id="btn_border_radius_edit" name="btn_border_radius_edit"><br>
+            <option>請選擇</option>
+            <option value="2px">2px</option>
+            <option value="8px">8px</option>
+            <option value="10px">10px</option>
+            <option value="15px">15px</option>
+            <option value="50%">50%</option>
+          </select><br>
+          <label for="text_in_btn_edit">按鈕名稱</label>
+          <textarea name="text_in_btn_edit" id="text_in_btn_edit" cols="30" row="10"></textarea>                     
+        </div><br> 
+        <button id="sent_edit_btn">確定</button>
+        <button id="cancel_edit_btn">取消</button>
+      </div>
+
+      <div id="new_img_set" style="display:none;">
+        <div style="display:flex; flex-direction:column;">
+          <img id="preview" style="width:200px; height:200px; display: block; margin:auto;"><br>
+          <from method="post" enctype="multipart/from-data"> 
+              <label for="uploadImage">上傳圖片</label>
+              <input type="file" id="uploadImage" data-target="file-uploader" accept="image/*" multiple="multiple">
+          </from><br>
+          <label for="img_width">圖片寬度</label>
+          <input type="number" name="img_width" id="img_width" value="200">
+          <label for="img_height">圖片高度</label>
+          <input type="number" name="img_height" id="img_height" value="200"><br>
+          <!-- <label for="img_padding_top">圖片外邊界(上)</label>
+          <input type="text" name="img_padding_top" id="img_padding_top" value="10">
+          <label for="img_padding_bottom">圖片外邊界(下)</label>
+          <input type="text" name="img_padding_bottom" id="img_padding_bottom" value="10">
+          <label for="img_padding_left">圖片外邊界(左)</label>
+          <input type="text" name="img_padding_left" id="img_padding_left" value="10">
+          <label for="img_padding_right">圖片外邊界(右)</label>
+          <input type="text" name="img_padding_right" id="img_padding_right" value="10"><br> -->
+        </div>
+        <button id="sent_img_">確定</button>
+        <button id="cancel_img_">取消</button>
+      </div>
+      <div id="img_edit" style="display:none;">
+        <div style="display:flex; flex-direction:column;">
+          <label for="img_width_edit">圖片寬度</label>
+          <input type="number" name="img_width_edit" id="img_width_edit">
+          <label for="img_height_edit">圖片高度</label>
+          <input type="number" name="img_height_edit" id="img_height_edit"><br>
+        </div><br>
+        <button id="sent_edit_img">更改</button>
+        <button id="cancel_edit_img">取消</button>
+      </div>
+
+    </div>
+    
+  <div id="div1" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
+  </div>
+
+   </body>
+</html>
