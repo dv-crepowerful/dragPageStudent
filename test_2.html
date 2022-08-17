@@ -15,7 +15,7 @@
             }
             .viewer{
                 border: #00b dashed;
-                min-width: 800px;
+                width: 100%;
                 min-height: 900px;
             }
             .set_area{
@@ -33,11 +33,8 @@
                 min-width: 660px;
                 margin: 5px;
                 margin-top: 20px;
-                
-                justify-content: space-around;
-            }
-            .new_block:hover{
                 border: #0ab solid;
+                justify-content: space-around;
             }
             .delete_btn{
                 position: absolute;
@@ -55,78 +52,18 @@
                 top: 0px;
             }
 
-            .text_area{
+            .elem_area{
                 position: relative;
                 display: flex;
                 flex-direction: column;
                 flex-wrap: wrap;
-                margin: 10px;
-                min-width: 200px;
-            }
-            .text_area:hover{
-                border: #ccc dashed;
-            }
-
-            .list_area{
-                position: relative;
-                display: flex;
-                margin: 10px;
-                min-width: 200px;
-            }
-            .list_area:hover{
-                border: #ccc dashed;
-            }
-
-            .btn_area{
-                position: relative;
-                display: flex;
-                margin: 10px;
-                min-width: 200px;
-            }
-            .btn_area:hover{
-                border: #ccc dashed;
-            }
-
-            .link_area{
-                position: relative;
-                display: flex;
-                margin: 10px;
-                min-width: 200px;
-            }
-            .link_area:hover{
-                border: #ccc dashed;
-            }
-
-            .picture_area{
-                position: relative;
-                display: flex;
+                word-wrap:break-word;
+                flex-grow: 0.8;
                 margin: 10px;
                 min-width: 200px;
                 border: #ccc dashed;
             }
-            .picture_area:hover{
-                border: #ccc dashed;
-            }
-
-            .video_area{
-                position: relative;
-                display: flex;
-                margin: 10px;
-                min-width: 200px;
-            }
-            .video_area:hover{
-                border: #ccc dashed;
-            }
-
-            .div_area{
-                position: relative;
-                display: flex;
-                margin: 10px;
-                min-width: 200px;
-            }
-            .div_area:hover{
-                border: #ccc dashed;
-            }
+            
             .div_elem_set_dialog{
                 position: relative;
             }
@@ -178,6 +115,8 @@
     <body>
         <div class="screen">
             <div id="disign_area" class="disign_area">
+                <button id="viewer_mod_btn">切換檢視模式</button>
+                <button id="set_mod_btn">切換編輯模式</button>
                 <button id="create_block_btn" onclick="create_block()">新增區塊</button>
                 <ul ondragstart="dragStartHandler(event)" >
                     <li class="elem_li" draggable="true" data-value="text">文字</li>
@@ -221,7 +160,7 @@
                         <label for="font_color">字體顏色:</label>
                         <input type="color" id="font_color">
                         <label for="text_in">輸入文字:</label>
-                        <textarea  id="text_in" cols="30" rows="10"></textarea>
+                        <textarea  id="text_in" cols="30" rows="10" style="white-space:pre-line;"></textarea>
                         <button id="text_sent">送出</button>
                         <button id="text_delete">刪除</button>
                         <button id="text_cancel">取消</button>
@@ -453,6 +392,58 @@
             let set_area = document.getElementById("set_area");
             let reset_elem_selector = document.getElementById("reset_elem_selector");
 
+            let viewer_mod_btn = document.getElementById("viewer_mod_btn");
+            let set_mod_btn = document.getElementById("set_mod_btn");
+            let create_block_btn = document.getElementById("create_block_btn");
+            let block = document.getElementsByClassName("new_block");
+            let elem_area = document.getElementsByClassName("elem_area");
+            let delete_btn = document.getElementsByClassName("delete_btn");
+            let set_btn = document.getElementsByClassName("set_btn");
+            let reset_btn = document.getElementsByClassName("reset_btn");
+
+            set_mod_btn.style.display = "none";
+            viewer_mod_btn.onclick = function(){
+                set_mod_btn.style.display = "inline";
+                create_block_btn.style.display = "none";
+                viewer_mod_btn.style.display = "none";
+                for (let i = 0; i < block.length; i++) {
+                    block[i].style.borderStyle = "none";    
+                }
+                for (let j = 0; j < delete_btn.length; j++) {
+                    delete_btn[j].style.display = "none";    
+                }
+                for (let k = 0; k < set_btn.length; k++) {
+                    set_btn[k].style.display = "none";    
+                }
+                for (let l = 0; l < reset_btn.length; l++) {
+                    reset_btn[l].style.display = "none";    
+                }
+                for (let m = 0; m < elem_area.length; m++) {
+                    elem_area[m].style.borderStyle = "none"; 
+                }
+            }
+            
+            set_mod_btn.onclick = function(){
+                set_mod_btn.style.display = "none";
+                create_block_btn.style.display = "inline";
+                viewer_mod_btn.style.display = "inline";
+                for (let i = 0; i < block.length; i++) {
+                    block[i].style.borderStyle = "solid";    
+                }
+                for (let j = 0; j < delete_btn.length; j++) {
+                    delete_btn[j].style.display = "inline";    
+                }
+                for (let k = 0; k < set_btn.length; k++) {
+                    set_btn[k].style.display = "inline";    
+                }
+                for (let l = 0; l < reset_btn.length; l++) {
+                    reset_btn[l].style.display = "inline";    
+                }
+                for (let m = 0; m < elem_area.length; m++) {
+                    elem_area[m].style.borderStyle = "dashed"; 
+                }
+            }
+
             function dragStartHandler(event) {
                 if (event.target instanceof HTMLLIElement) 
                 {
@@ -544,7 +535,7 @@
                 let delete_text_area_btn = document.createElement('input');
                 let set_text_area_btn = document.createElement('input');
                 let reset_text_area_btn = document.createElement('input');
-                text_area.className= "text_area";
+                text_area.className= "elem_area";
                 text_area.draggable="true"
                 delete_text_area_btn.type = 'button';
                 delete_text_area_btn.value = "刪除";
@@ -712,7 +703,7 @@
                 let delete_list_area_btn = document.createElement('input');
                 let set_list_area_btn = document.createElement('input');
                 let reset_list_area_btn = document.createElement('input');
-                list_area.className= "list_area";
+                list_area.className= "elem_area";
                 list_area.draggable="true"
                 delete_list_area_btn.type = 'button';
                 delete_list_area_btn.value = "刪除";
@@ -864,7 +855,7 @@
                 let new_btn_cancel = document.getElementById("new_btn_cancel");
                 let delete_btn = document.getElementById("delete_btn");
                 let btn_text_in = document.getElementById("btn_text_in");
-                btn_area.className= "btn_area";
+                btn_area.className= "elem_area";
                 btn_area.draggable="true"
                 delete_btn_area_btn.type = 'button';
                 delete_btn_area_btn.value = "刪除";
@@ -986,7 +977,7 @@
                 let delete_link_area_btn = document.createElement('input');
                 let set_link_area_btn = document.createElement('input');
                 let reset_link_area_btn = document.createElement('input');
-                link_area.className= "link_area";
+                link_area.className= "elem_area";
                 link_area.draggable="true"
                 delete_link_area_btn.type = 'button';
                 delete_link_area_btn.value = "刪除";
@@ -1114,7 +1105,7 @@
                 let delete_picture_area_btn = document.createElement('input');
                 let set_picture_area_btn = document.createElement('input');
                 let reset_picture_area_btn = document.createElement('input');
-                picture_area.className= "picture_area";
+                picture_area.className= "elem_area";
                 picture_area.draggable="true"
                 delete_picture_area_btn.type = 'button';
                 delete_picture_area_btn.value = "刪除";
@@ -1227,13 +1218,13 @@
 
                                 pre_view_btn.onclick = function (){
                                     reset_img.style.width = 300 + 'px';
-                                    pre_viewer.appendChild(reset_img)
+                                    pre_viewer.appendChild(reset_img);
                                 }
                             }
 
                             new_picture_sent.onclick = function (){
                                 pre_viewer.firstChild.style.width = img_size.value + 'px';
-                                reset_picture_area.replaceChild(pre_viewer.firstChild,reset_picture);
+                                reset_picture_area.replaceChild(pre_viewer.firstElementChild,reset_picture);
                                 set_picture.style.display = "none";
                                 reset_elem_selector.removeChild(reset_elem_selector.firstChild);
                             }
@@ -1271,7 +1262,7 @@
                 let delete_video_area_btn = document.createElement('input');
                 let set_video_area_btn = document.createElement('input');
                 let reset_video_area_btn = document.createElement('input');
-                video_area.className= "video_area";
+                video_area.className= "elem_area";
                 video_area.draggable="true"
                 delete_video_area_btn.type = 'button';
                 delete_video_area_btn.value = "刪除";
@@ -1466,7 +1457,7 @@
                 let delete_div_area_btn = document.createElement('input');
                 let set_div_area_btn = document.createElement('input');
                 let reset_div_area_btn = document.createElement('input');
-                div_area.className= "div_area";
+                div_area.className= "elem_area";
                 div_area.draggable="true"
                 delete_div_area_btn.type = 'button';
                 delete_div_area_btn.value = "刪除";
