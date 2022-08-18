@@ -11,7 +11,7 @@
                 background: #aaa;
                 width: 300px;
                 min-height: 900px;
-                justify-content: space-around;
+                
             }
             .viewer{
                 border: #00b dashed;
@@ -56,12 +56,11 @@
                 position: relative;
                 display: flex;
                 flex-direction: column;
-                flex-wrap: wrap;
-                word-wrap:break-word;
                 flex-grow: 0.8;
                 margin: 10px;
                 min-width: 200px;
                 border: #ccc dashed;
+                justify-content: center;
             }
             
             .div_elem_set_dialog{
@@ -131,13 +130,13 @@
                 <div id="set_area" class="set_area">
 
                     <div id="set_text" style="display: none;">
-                        <label for="type_select">文體:</label>
-                        <select name="type_select" id="type_select">
-                            <option value="h1">大標題</option>
-                            <option value="h3">小標題</option>
-                            <option value="p">文章</option>
+                        <label for="text_textAlign">排版選擇</label>
+                        <select id="text_textAlign">
+                            <option value="left">靠左</option>
+                            <option value="right">靠右</option>
+                            <option value="center">置中</option>
                         </select>
-                        <label for="font_type">特效:</label>
+                        <label for="font_type">文字特效:</label>
                         <select name="font_type" id="font_type">
                             <option value="I">斜體</option>
                             <option value="b">粗體</option>
@@ -146,6 +145,7 @@
                             <option value="sbu">下標</option>
                             <option value="strong">強調</option>
                             <option value="s">刪除線</option>
+                            <option value="p">無特效</option>
                         </select>
                         <label for="font_family">字型:</label>
                         <select name="font_family" id="font_family">
@@ -167,6 +167,12 @@
                     </div>
 
                     <div id="set_list" style="display: none;">
+                        <label for="list_align_items">排版選擇</label>
+                        <select id="list_align_items">
+                            <option value="flex-start">靠左</option>
+                            <option value="flex-end">靠右</option>
+                            <option value="center">置中</option>
+                        </select>
                         <label for="list_type">清單類型&排序:</label>
                         <div>
                             <select id="list_type">
@@ -179,7 +185,8 @@
                             </select>
                             <button id="type_enter_btn">確定</button>
                         </div>
-
+                        <label for="li_margin">條目間距</label>
+                        <input type="number" id="li_margin">
                         <label for="new_li_text_in">條目內容</label>
                         <div>
                             <input type="text" id="new_li_text_in">
@@ -192,6 +199,12 @@
 
                     <div id="reset_list" style="display: none;">
                         <div id="reset_li_previewer"></div>
+                        <label for="reset_list_align_items">排版選擇</label>
+                        <select id="reset_list_align_items">
+                            <option value="flex-start">靠左</option>
+                            <option value="flex-end">靠右</option>
+                            <option value="center">置中</option>
+                        </select>
                         <label for="reset_list_type">更改清單樣式</label>
                         <div>
                             <select id="reset_list_type">
@@ -204,6 +217,8 @@
                             </select>
                             <button id="reset_type_enter_btn">確定</button>
                         </div>
+                        <label for="reset_li_margin">條目間距</label>
+                        <input type="number" id="reset_li_margin">
                         <label for="new_list_text_in">新增條目</label>
                         <div>
                             <input type="text" id="new_list_text_in">
@@ -221,14 +236,28 @@
                     </div>
 
                     <div id="set_btn" style="display: none;">
+                        <label for="btn_align_items">排版選擇</label>
+                        <select id="btn_align_items">
+                            <option value="flex-start">靠左</option>
+                            <option value="flex-end">靠右</option>
+                            <option value="center">置中</option>
+                        </select>
                         <label for="btn_text_in">按鈕文字:</label>
                         <input type="text" id="btn_text_in">
+                        <label for="btn_width">按鈕寬度</label>
+                        <input type="number" id="btn_width">
                         <button id="new_btn_sent">送出</button>
                         <button id="delete_btn">刪除</button>
                         <button id="new_btn_cancel">取消</button>
                     </div>
 
                     <div id="set_link" style="display: none;">
+                        <label for="link_align_items">排版選擇</label>
+                        <select id="link_align_items">
+                            <option value="flex-start">靠左</option>
+                            <option value="flex-end">靠右</option>
+                            <option value="center">置中</option>
+                        </select>
                         <label for="link_name">連結提示:</label>
                         <input type="text"  id="link_name">
                         <label for="link_text_in">連結網址:</label>
@@ -305,18 +334,19 @@
                         <li draggable="true" data-value="div_text">文字</li>
                         <li draggable="true" data-value="div_btn">按鈕</li>
                         <li draggable="true" data-value="div_inp">輸入</li>
+                        <li draggable="true" data-value="div_img">圖片</li>
                     </ul>
                 </div>
                 <div id="div_elem_set" class="div_elem_set">
                     <strong>編輯元素:</strong>
                     <div id="div_text_set" style="display: none;">
-                        <label for="div_text_type_select">文體:</label>
-                        <select name="type_select" id="div_text_type_select">
-                            <option value="h1">大標題</option>
-                            <option value="h3">小標題</option>
-                            <option value="p">文章</option>
+                        <label for="div_text_textAlign">排版選擇</label>
+                        <select id="div_text_textAlign">
+                            <option value="left">靠左</option>
+                            <option value="right">靠右</option>
+                            <option value="center">置中</option>
                         </select>
-                        <label for="div_font_type">特效:</label>
+                        <label for="div_font_type">文字特效:</label>
                         <select id="div_font_type">
                             <option value="I">斜體</option>
                             <option value="b">粗體</option>
@@ -325,6 +355,7 @@
                             <option value="sbu">下標</option>
                             <option value="strong">強調</option>
                             <option value="s">刪除線</option>
+                            <option value="p">無特效</option>
                         </select>
                         <label for="div_font_family">字型:</label>
                         <select id="div_font_family">
@@ -378,6 +409,16 @@
                         <button id="div_inp_sent">完成</button>
                         <button id="div_inp_cancel">取消</button>
                     </div>
+                    <div id="div_img_set" style="display: none;">
+                        <label for="div_img_onload">圖片上傳</label>
+                        <input type="file" id="div_img_onload" accept="image/gif, image/jpeg, image/png">
+                        <label for="div_img_size">圖片大小:</label>
+                        <input type="number"  id="div_img_size">
+                        <button id="div_img_pre_view_btn">預覽</button>
+                        <div id="div_img_pre_viewer"></div>
+                        <button id="div_img_sent">送出</button>
+                        <button id="div_img_cancel">取消</button>
+                    </div>
                 </div>
                 <div id="div_elem_list"></div>
                 <div id="div_elem_preview" class="div_elem_preview"></div>
@@ -422,7 +463,7 @@
                     elem_area[m].style.borderStyle = "none"; 
                 }
             }
-            
+
             set_mod_btn.onclick = function(){
                 set_mod_btn.style.display = "none";
                 create_block_btn.style.display = "inline";
@@ -522,7 +563,7 @@
 
             function create_text_area(dropX ,target_block){
                 let set_text = document.getElementById("set_text");
-                let type_select = document.getElementById("type_select");
+                let text_textAlign = document.getElementById("text_textAlign");
                 let font_type = document.getElementById("font_type");
                 let font_family = document.getElementById("font_family");
                 let font_size = document.getElementById("font_size");
@@ -595,15 +636,14 @@
                     set_text.style.display = "flex";
                     set_text.style.flexDirection = "column";
                     text_delete.style.display = "none";
-  
                     text_sent.onclick = function (){
-                        let text = document.createElement(type_select.value);
-                        let text_type = document.createElement(font_type.value);
-                        text_type.style.fontFamily = font_family.value;
-                        text_type.style.color = font_color.value;
-                        text_type.style.fontSize = font_size.value + 'px';
-                        text_type.textContent = text_in.value;
-                        text.appendChild(text_type);
+                        let text = document.createElement(font_type.value);
+                        text.style.wordWrap = "break-word";
+                        text.style.fontFamily = font_family.value;
+                        text.style.color = font_color.value;
+                        text.style.fontSize = font_size.value + 'px';
+                        text.textContent = text_in.value;
+                        text.textAlign = text_textAlign.value;
                         set_text_area.appendChild(text);
                         set_text_area.firstChild.style.display = "inline"
                         set_text.style.display = "none";
@@ -634,22 +674,18 @@
                         set_text.style.display = "flex";
                         set_text.style.flexDirection = "column";
                         text_delete.style.display = "inline";
-
-                        type_select.value = reset_text.tagName;
-                        font_type.value = reset_text.firstChild.tagName;
-                        font_family.value = reset_text.firstChild.style.fontFamily;
-                        font_color.value = reset_text.firstChild.style.color;
-                        font_size.value = reset_text.firstChild.style.fontSize.substr(1, 2);
-                        text_in.value = reset_text.firstChild.textContent;
-                        
+                        font_type.value = reset_text.tagName;
+                        font_family.value = reset_text.style.fontFamily;
+                        font_color.value = reset_text.style.color;
+                        font_size.value = reset_text.style.fontSize.substr(1, 2);
+                        text_in.value = reset_text.textContent;
                         text_sent.onclick = function (){
-                            let new_text = document.createElement(type_select.value);
-                            let new_text_type = document.createElement(font_type.value);
-                            new_text_type.style.fontFamily = font_family.value;
-                            new_text_type.style.color = font_color.value;
-                            new_text_type.style.fontSize = font_size.value + 'px';
-                            new_text_type.textContent = text_in.value;
-                            new_text.appendChild(new_text_type);
+                            let new_text = document.createElement(font_type.value);
+                            new_text.style.fontFamily = font_family.value;
+                            new_text.style.color = font_color.value;
+                            new_text.style.fontSize = font_size.value + 'px';
+                            new_text.textContent = text_in.value;
+                            new_text.style.textAlign = text_textAlign.value;
                             reset_text_area.replaceChild(new_text,reset_text);
                             set_text.style.display = "none";
                             if(reset_elem_selector.childNodes.length !== 0){
@@ -679,7 +715,9 @@
             
             function create_list_area(dropX ,target_block){
                 let set_list = document.getElementById('set_list');
+                let list_align_items = document.getElementById("list_align_items");
                 let list_type = document.getElementById ("list_type");
+                let li_margin = document.getElementById("li_margin");
                 let new_li_text_in = document.getElementById ("new_li_text_in");
                 let create_new_li_btn = document.getElementById ("create_new_li_btn");
                 let list_pre_viewer = document.getElementById ("list_pre_viewer");
@@ -695,6 +733,7 @@
                 let reset_type_enter_btn = document.getElementById("reset_type_enter_btn");
                 let new_list_text_in = document.getElementById("new_list_text_in");
                 let sent_new_li = document.getElementById("sent_new_li");
+                let reset_li_margin = document.getElementById("reset_li_margin");
                 let reset_list_text_in = document.getElementById("reset_list_text_in");
                 let sent_reset_li = document.getElementById("sent_reset_li");
                 let delete_li = document.getElementById("delete_li");
@@ -756,29 +795,30 @@
 
                 set_list_area_btn.onclick = function (){
                     let set_list_area = event.target.parentElement;
-                    let new_list = document.createElement(list_type.value);
                     set_list.style.display = "flex";
                     set_list.style.flexDirection = "column";
 
-                    type_enter_btn.onclick = function (){     
-                        new_list.style.display = "flex";
-                        new_list.style.flexDirection = list_style.value;
+                    type_enter_btn.onclick = function (){ 
+                        let new_list = document.createElement(list_type.value);    
+                        
                         list_pre_viewer.appendChild(new_list);
                     }
 
                     create_new_li_btn.onclick = function (){
                         let new_li = document.createElement('li');
                         new_li.textContent = new_li_text_in.value;
-                        if (list_style.value === "row"){
-                            new_li.style.display = "inline";
-                            new_li.style.margin = 5 + 'px';
-                        }
                         list_pre_viewer.lastElementChild.appendChild(new_li);
                     }
 
                     new_list_sent.onclick = function (){
+                        list_pre_viewer.lastElementChild.style.display = "flex";
+                        list_pre_viewer.lastElementChild.style.flexDirection = list_style.value;
+                        for (let i = 0; i < list_pre_viewer.lastElementChild.childNodes.length; i++) {
+                            list_pre_viewer.lastElementChild.childNodes[i].style.margin = li_margin.value + 'px';
+                        }
                         set_list.style.display = "none";
-                        set_list_area.appendChild(new_list);
+                        set_list_area.style.alignItems = list_align_items.value;
+                        set_list_area.appendChild(list_pre_viewer.lastElementChild);
                         if(set_list_area.childNodes.length !== 3){
                             set_list_area.firstChild.style.display = "inline";
                         }
@@ -810,7 +850,20 @@
                             reset_list.style.flexDirection = "column";
                             let pre_reset_ul = reset_list_area.childNodes[event.target.id];
                             let reset_ul = pre_reset_ul.cloneNode(true);
-                            let reset_li = reset_ul.childNodes;
+                            reset_ul.style.flexDirection = "column";
+                            for (let i = 0; i < reset_ul.childNodes.length; i++) {
+                                reset_ul.childNodes[i].style.margin = 0 + 'px';
+                                reset_ul.childNodes[i].onclick = function (){
+                                    let reset_li = event.target;
+                                    reset_list_text_in.value = reset_li.textContent;
+                                    sent_reset_li.onclick = function (){
+                                        reset_li.textContent = reset_list_text_in.value
+                                    }
+                                    delete_li.onclick = function (){
+                                        reset_ul.removeChild(reset_li);
+                                    }
+                                }
+                            }
                             reset_li_previewer.appendChild(reset_ul);
                             sent_new_li.onclick = function (){
                                 let new_li = document.createElement('li');
@@ -819,6 +872,10 @@
                             }
 
                             reset_list_sent.onclick = function (){
+                                reset_ul.style.flexDirection = list_style.value;
+                                for (let i = 0; i < reset_ul.childNodes.length; i++) {
+                                    reset_ul.childNodes[i].style.margin = reset_li_margin +'px';    
+                                }
                                 reset_list_area.replaceChild(reset_ul,pre_reset_ul);
                                 if(reset_elem_selector.childNodes.length !== 0){
                                     reset_elem_selector.removeChild(reset_elem_selector.firstChild)
@@ -857,6 +914,8 @@
                 let new_btn_cancel = document.getElementById("new_btn_cancel");
                 let delete_btn = document.getElementById("delete_btn");
                 let btn_text_in = document.getElementById("btn_text_in");
+                let btn_align_items = document.getElementById("btn_align_items");
+                let btn_width = document.getElementById("btn_width");
                 btn_area.className= "elem_area";
                 btn_area.draggable="true"
                 delete_btn_area_btn.type = 'button';
@@ -914,6 +973,8 @@
                     new_btn_sent.onclick = function (){
                         let new_btn = document.createElement('button');
                         new_btn.textContent = btn_text_in.value;
+                        new_btn.style.width = btn_width.value + 'px';
+                        set_btn_area.style.alignItems = btn_align_items.value;
                         set_btn_area.appendChild(new_btn)
                         set_btn.style.display = "none";
                         if (set_btn_area.childNodes.length !== 3){
@@ -946,6 +1007,8 @@
                             btn_text_in.value = reset_btn.textContent ;
                             new_btn_sent.onclick = function (){
                                 reset_btn.textContent = btn_text_in.value;
+                                reset_btn.style.width = btn_width.value + 'px';
+                                reset_btn_area.style.alignItems = btn_align_items.value;
                                 reset_elem_selector.removeChild(reset_elem_selector.firstElementChild);
                                 set_btn.style.display = "none";
                             }
@@ -954,7 +1017,7 @@
                                 reset_btn_area.removeChild(reset_btn);
                                 reset_elem_selector.removeChild(reset_elem_selector.firstElementChild);
                                 if (reset_btn_area.childNodes.length == 3){
-                                    reset_btn_area.firstChild.style.display = "none";  
+                                    reset_btn_area.firstChild.style.display = "none";
                                 }
                                 set_btn.style.display = "none";
                             }
@@ -974,6 +1037,7 @@
                 let new_link_cancel = document.getElementById("new_link_cancel");
                 let link_name = document.getElementById("link_name");
                 let link_text_in = document.getElementById("link_text_in");
+                let link_align_items = document.getElementById("link_align_items");
                 let delete_link = document.getElementById("delete_link");
                 let link_area = document.createElement('div');
                 let delete_link_area_btn = document.createElement('input');
@@ -1038,6 +1102,7 @@
                         new_link.textContent = link_name.value;
                         new_link.href = link_text_in.value;
                         set_link.style.display = "none";
+                        set_link_area.style.alignItems = link_align_items.value;
                         set_link_area.appendChild(new_link);
                         if (set_link_area.childNodes.length !== 3){
                             set_link_area.firstChild.style.display = "inline"
@@ -1067,13 +1132,12 @@
                             set_link.style.display = "flex";
                             set_link.style.flexDirection = "column";
                             delete_link.style.display = "inline";
-
                             link_name.value = reset_link.textContent;
                             link_text_in.value = reset_link.href;
-
                             new_link_sent.onclick = function (){
                                 reset_link.textContent = link_name.value;
                                 reset_link.href = link_text_in.value;
+                                reset_link_area.style.alignItems = link_align_items.value;
                                 set_link.style.display = "none";
                                 reset_elem_selector.removeChild(reset_elem_selector.firstChild);
                             }
@@ -1160,6 +1224,7 @@
 
                 set_picture_area_btn.onclick = function (){
                     let set_picture_area = event.target.parentElement;
+                    let set_img_btn = event.target;
                     set_picture.style.display = "flex";
                     set_picture.style.flexDirection = "column";
                     delete_picture.style.display = "none";
@@ -1180,6 +1245,7 @@
                     
                     new_picture_sent.onclick = function (){
                         pre_viewer.firstChild.style.width = img_size.value + 'px';
+                        set_picture_area.style.alignItems = "center";
                         set_picture_area.appendChild(pre_viewer.firstChild)
                         set_picture.style.display = "none";
                         if (set_picture_area.childNodes.length !== 3){
@@ -1313,6 +1379,7 @@
 
                 delete_video_area_btn.onclick = function (){
                     target_block.removeChild(event.target.parentElement);
+                    event.stopPropagation()
                 }
 
                 set_video_area_btn.onclick = function (){
@@ -1337,6 +1404,7 @@
                     
                     new_video_sent.onclick = function (){
                         video_pre_viewer.firstChild.style.width = video_size.value + 'px';
+                        set_video_area.style.alignItems = "center";
                         set_video_area.appendChild(video_pre_viewer.firstChild)
                         set_video.style.display = "none";
                         if (set_video_area.childNodes.length !==3){
@@ -1348,6 +1416,8 @@
                         video_pre_viewer.removeChild(video_pre_viewer.firstChild);
                         set_video.style.display = "none";
                     }
+
+                    event.stopPropagation()
                 }
 
                 reset_video_area_btn.onclick = function(){
@@ -1408,6 +1478,8 @@
 
                         }
                     }
+
+                    event.stopPropagation()
                 }
                 
             }
@@ -1434,6 +1506,7 @@
                 let div_elem_create_area = document.getElementById("div_elem_create_area");
 
                 let div_text_set = document.getElementById("div_text_set");
+                let div_text_textAlign = document.getElementById ("div_text_textAlign");
                 let div_text_type_select = document.getElementById("div_text_type_select");
                 let div_font_type = document.getElementById("div_font_type");
                 let div_font_family = document.getElementById("div_font_family");
@@ -1453,6 +1526,14 @@
                 let div_inp_label_text_in = document.getElementById("div_inp_label_text_in");
                 let div_inp_sent = document.getElementById("div_inp_sent");
                 let div_inp_cancel = document.getElementById("div_inp_cancel");
+
+                let div_img_set = document.getElementById("div_img_set");
+                let div_img_onload = document.getElementById ("div_img_onload");
+                let div_img_sent = document.getElementById("div_img_sent");
+                let div_img_size = document.getElementById("div_img_size");
+                let div_img_cancel = document.getElementById("div_img_cancel");
+                let div_img_pre_view_btn = document.getElementById("div_img_pre_view_btn");
+                let div_img_pre_viewer = document.getElementById("div_img_pre_viewer");
 
                 let new_div_sent = document.getElementById("new_div_sent");
                 let new_div_cancel = document.getElementById("new_div_cancel");
@@ -1532,6 +1613,10 @@
                         new_div.style.borderWidth = border_width.value + 'px';
                         new_div.style.borderRadius = border_radius.value +  'px';
                         div_elem_create.style.display = "inline";
+                        new_div.style.display = "flex";
+                        new_div.style.flexDirection = "column";
+                        new_div.style.justifyContent = "center";
+                        new_div.style.alignItems = "center";
                         div_preview.appendChild(new_div);
                     }
 
@@ -1546,7 +1631,7 @@
                                 e.dataTransfer.effectAllowed = 'move'; 
                             } 
                             else {
-                                e.preventDefault(); 
+                                e.preventDefault();
                             }
                         }
 
@@ -1563,16 +1648,17 @@
                                     div_btn_set.style.display = "none";
                                     div_text_set.style.display = "flex";
                                     div_inp_set.style.display = "none";
+                                    div_img_set.style.display = "none";
                                     div_text_set.style.flexDirection = "column";
                                     div_text_sent.onclick = function(){
-                                        let div_text = document.createElement(div_text_type_select.value);
                                         let div_font = document.createElement(div_font_type.value);
-                                        div_font.style.fontSize = div_font_size + 'px';
+                                        div_font.style.fontSize = div_font_size.value + 'px';
                                         div_font.style.fontFamily = div_font_family.value;
                                         div_font.style.color = div_font_color.value
                                         div_font.textContent = div_text_in.value;
-                                        div_text.appendChild(div_font);
-                                        set_div_elem_block.appendChild(div_text);
+                                        div_font.style.textAlign = div_text_textAlign.value;
+                                        div_font.style.wordWrap = "word-break";
+                                        set_div_elem_block.appendChild(div_font);
                                         div_text_set.style.display = "none";
                                     };
                                     div_text_cancel.onclick = function(){
@@ -1583,6 +1669,7 @@
                                     div_text_set.style.display = "none";
                                     div_btn_set.style.display = "flex";
                                     div_inp_set.style.display = "none";
+                                    div_img_set.style.display = "none";
                                     div_btn_set.style.flexDirection = "column";
                                     div_btn_sent.onclick = function(){
                                         let div_btn = document.createElement ("button");
@@ -1598,6 +1685,7 @@
                                     div_text_set.style.display = "none";
                                     div_btn_set.style.display = "none";
                                     div_inp_set.style.display = "flex";
+                                    div_img_set.style.display = "none";
                                     div_inp_set.style.flexDirection = "column";
                                     div_inp_sent.onclick = function(){
                                         let div_inp = document.createElement("input");
@@ -1611,6 +1699,38 @@
                                     div_inp_cancel.onclick = function(){
                                         div_inp_set.style.display = "none";
                                     };
+                                break;}
+                                case "div_img":{
+                                    div_text_set.style.display = "none";
+                                    div_btn_set.style.display = "none";
+                                    div_inp_set.style.display = "none";
+                                    div_img_set.style.display = "flex";
+                                    div_img_set.style.flexDirection = "column";
+                                    div_img_onload.onchange = function(){
+                                        let reader = new FileReader();
+                                        let img = document.createElement('img');
+
+                                        reader.onload = function (e){                               
+                                            img.setAttribute("src", e.target.result)
+                                        }
+                                        reader.readAsDataURL(this.files[0]);
+
+                                        div_img_pre_view_btn.onclick = function (){
+                                            img.style.width = 200+ 'px';
+                                            div_img_pre_viewer.appendChild(img)
+                                        }
+                                    }
+                                    div_img_sent.onclick = function (){
+                                        div_img_pre_viewer.firstChild.style.width = div_img_size.value + 'px';
+                                        set_div_elem_block.appendChild(div_img_pre_viewer.firstChild);
+                                        div_img_set.style.display = "none";
+                                    }
+
+                                    div_img_cancel.onclick = function (){
+                                        div_img_pre_viewer.removeChild(div_img_pre_viewer.firstChild);
+                                        div_img_set.style.display = "none";
+                                    }
+
                                 break;}
                             }
                         }
@@ -1628,8 +1748,9 @@
                     }
 
                     new_div_sent.onclick = function (){
+                        set_div_area.style.alignItems = "center";
                         set_div_area.appendChild(div_preview.firstChild);
-                        set_area.style.display = "none";
+                        set_div.style.display = "none";
                     }
 
                     new_div_cancel.onclick = function (){
@@ -1641,5 +1762,4 @@
                 }
             }
         </script>
-    </body>
 </html>
