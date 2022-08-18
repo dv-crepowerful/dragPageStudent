@@ -489,12 +489,14 @@
                         set_text.style.display = "flex";
                         set_text.style.flexDirection = "column";
                         text_delete.style.display = "inline";
+
                         type_select.value = reset_text.tagName;
                         font_type.value = reset_text.firstChild.tagName;
                         font_family.value = reset_text.firstChild.style.fontFamily;
                         font_color.value = reset_text.firstChild.style.color;
                         font_size.value = reset_text.firstChild.style.fontSize.substr(1, 2);
                         text_in.value = reset_text.firstChild.textContent;
+                        
                         text_sent.onclick = function (){
                             let new_text = document.createElement(type_select.value);
                             let new_text_type = document.createElement(font_type.value);
@@ -920,8 +922,10 @@
                             set_link.style.display = "flex";
                             set_link.style.flexDirection = "column";
                             delete_link.style.display = "inline";
+
                             link_name.value = reset_link.textContent;
                             link_text_in.value = reset_link.href;
+
                             new_link_sent.onclick = function (){
                                 reset_link.textContent = link_name.value;
                                 reset_link.href = link_text_in.value;
